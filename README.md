@@ -5,6 +5,6 @@
 * Backend server connected to embedded device
 * Small OS for embedded device to send data to server
 
-###Side goals
+### Side goals
 * Jenkings CI/CD automated building and testing framework
 * Study diffrent network connection possibility between user equipment and backend
