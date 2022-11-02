@@ -1,13 +1,10 @@
 package com.example.fenixapplication
 
-
 import com.example.fenixapplication.utils.IsConnectionCorrectUtil
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 class IsConnectionCorrectUtilTest {
-
-
     @Test
     fun `empty id returns false`() {
         val result = IsConnectionCorrectUtil.validateConnectionInput(

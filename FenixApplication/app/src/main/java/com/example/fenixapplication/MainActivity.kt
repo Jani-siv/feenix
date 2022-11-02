@@ -7,32 +7,24 @@ import com.example.fenixapplication.fragments.*
 import com.example.fenixapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
         binding.bottomNavigationView.setOnItemSelectedListener {
 
             when(it.itemId) {
                 R.id.home -> replaceFragment(Home())
                 R.id.connections -> replaceFragment(Connections())
                 R.id.settings -> replaceFragment(Settings())
-
-                else -> {
-
-                }
+            else -> {}
             }
-
             true
         }
         binding.bottomNavigationView.selectedItemId = R.id.home
     }
-
 
     private fun replaceFragment(fragment : Fragment) {
         val fragmentManager = supportFragmentManager

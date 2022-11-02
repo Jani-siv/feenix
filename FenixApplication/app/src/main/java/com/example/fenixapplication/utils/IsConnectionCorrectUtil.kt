@@ -2,7 +2,6 @@ package com.example.fenixapplication.utils
 
 object IsConnectionCorrectUtil {
 
-
     fun validateConnectionInput(
         id: String,
         password: String
@@ -12,7 +11,5 @@ object IsConnectionCorrectUtil {
         }
         return true
     }
-
-
 
 }
