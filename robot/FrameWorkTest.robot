@@ -7,13 +7,12 @@ ${number2}  ${20}
 
 *** Test Cases ***
 Test 1: Try Ping Local Host
-    ${result} =  Ping Test
+    ${result} =       Ping Test
     Should Be True    ${result}
 
 *** Keywords ***
-
 Ping Test
     [Documentation]    rpiaddress, targetaddress
-    ${result} =      ping local host
-    [Return]    ${result}
+    ${result} =        ping local host
+    [Return]           ${result}
 

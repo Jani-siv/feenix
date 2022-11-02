@@ -1,6 +1,7 @@
 import unittest
 import Framework
 
+
 class Frameworktest(unittest.TestCase):
 
     def test_local_host_ping(self):
@@ -9,4 +10,3 @@ class Frameworktest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
