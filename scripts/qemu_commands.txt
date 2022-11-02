@@ -1,2 +1,0 @@
-qemu-system-aarch64 -m 1024 -M raspi2b -kernel /mnt/fat32/kernel7.img -dtb /mnt/fat32/bcm2710-rpi-3-b-plus.dtb -sd 2022-09-22-raspios-bullseye-armhf-lite.img -append "console=ttyAMA0 root=/dev/mmcblk0p2 rw rootwait rootfstype=ext4" -nographic -device usb-net,netdev=net0 -netdev user,id=net0,hostfwd=tcp::5555-:22
-qemu-system-arm -kernel kernel7-backup.img -boot c -m 1024 -M raspi2b -hda ../../../../binarys/2022-09-22-raspios-bullseye-armhf-lite.img -append root=/dev/mmcblk0p2 rw console=ttyAMA0 rootwait panic 10  -nographic -dtb bcm2710-rpi-3-b-plus.dtb
