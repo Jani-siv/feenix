@@ -8,3 +8,4 @@ def ping_local_host():
         if iterator.find("0%") < len(iterator):
             return True
     return False
+
