@@ -16,3 +16,4 @@ Ping Test
     [Documentation]    rpiaddress, targetaddress
     ${result} =      ping local host
     [Return]    ${result}
+
