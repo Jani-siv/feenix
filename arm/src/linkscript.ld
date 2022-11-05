@@ -10,6 +10,7 @@ STACK_SIZE = 0x2000;
 /* Section Definitions */
 SECTIONS
 {
+    . = 0x0;
     .text :
     {
         KEEP(*(.vectors .vectors.*))
