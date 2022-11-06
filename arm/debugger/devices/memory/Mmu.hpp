@@ -25,6 +25,7 @@ public:
     void WriteData16(uint32_t address, uint16_t data);
     void WriteData8(uint32_t address, uint8_t data);
 private:
+    uint32_t ConvertLmaToVectorPosition(uint32_t address);
     std::string getMemoryName(uint32_t address);
     std::string getSectionName(uint32_t address);
     std::map<std::string, Memory> memory_;

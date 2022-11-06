@@ -28,7 +28,7 @@ void Mmu::WriteData32(uint32_t address, uint32_t data)
     MemoryName memName = getMemoryName(address);
     SectionName secName = getSectionName(address);
     uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
-    memory_[memName].WriteMemory32(transformedAddress, data);
+    memory_[memName].WriteMemory32(ConvertLmaToVectorPosition(transformedAddress), data);
 }
 
 void Mmu::WriteData16(uint32_t address, uint16_t data)
@@ -36,7 +36,7 @@ void Mmu::WriteData16(uint32_t address, uint16_t data)
     MemoryName memName = getMemoryName(address);
     SectionName secName = getSectionName(address);
     uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
-    memory_[memName].WriteMemory16(transformedAddress, data);
+    memory_[memName].WriteMemory16(ConvertLmaToVectorPosition(transformedAddress), data);
 }
 
 void Mmu::WriteData8(uint32_t address, uint8_t data)
@@ -44,7 +44,7 @@ void Mmu::WriteData8(uint32_t address, uint8_t data)
     MemoryName memName = getMemoryName(address);
     SectionName secName = getSectionName(address);
     uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
-    memory_[memName].WriteMemory8(transformedAddress, data);
+    memory_[memName].WriteMemory8(ConvertLmaToVectorPosition(transformedAddress), data);
 }
 
 uint32_t Mmu::ReadData32(uint32_t address)
@@ -52,7 +52,7 @@ uint32_t Mmu::ReadData32(uint32_t address)
     MemoryName memName = getMemoryName(address);
     SectionName secName = getSectionName(address);
     uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
-    return memory_[memName].ReadMemory32(transformedAddress);
+    return memory_[memName].ReadMemory32(ConvertLmaToVectorPosition(transformedAddress));
 }
 
 uint16_t Mmu::ReadData16(uint32_t address)
@@ -60,7 +60,7 @@ uint16_t Mmu::ReadData16(uint32_t address)
     MemoryName memName = getMemoryName(address);
     SectionName secName = getSectionName(address);
     uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
-    return memory_[memName].ReadMemory16(transformedAddress);
+    return memory_[memName].ReadMemory16(ConvertLmaToVectorPosition(transformedAddress));
 }
 
 uint8_t Mmu::ReadData8(uint32_t address)
@@ -68,7 +68,7 @@ uint8_t Mmu::ReadData8(uint32_t address)
     MemoryName memName = getMemoryName(address);
     SectionName secName = getSectionName(address);
     uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
-    return memory_[memName].ReadMemory8(transformedAddress);
+    return memory_[memName].ReadMemory8(ConvertLmaToVectorPosition(transformedAddress));
 }
 
 std::string Mmu::getMemoryName(uint32_t address)
@@ -97,6 +97,14 @@ std::string Mmu::getSectionName(uint32_t address)
         }
     }
     return secName;
+}
+uint32_t Mmu::ConvertLmaToVectorPosition(uint32_t address)
+{
+    if (address % 0x4 == 0)
+    {
+        return (address / 4);
+    }
+    return 0;
 }
 
 } // namespace memory

@@ -1,4 +1,4 @@
-set(TESTNAME Memory)
+set(TESTNAME MemoryTests)
 
 set(BASEPATH "${CMAKE_SOURCE_DIR}")
 
@@ -34,7 +34,7 @@ add_test(${TESTNAME} ${TESTNAME}Tests)
 
 #REGISTERS UT
 
-set(TESTNAME Registers)
+set(TESTNAME RegistersTests)
 
 project(${TESTNAME})
 
@@ -54,7 +54,7 @@ target_link_libraries(${TESTNAME} gtest gmock gtest_main)
 add_test(${TESTNAME} ${TESTNAME}Tests)
 
 #mmu
-set(TESTNAME Mmu)
+set(TESTNAME MmuTests)
 
 project(${TESTNAME})
 
@@ -76,7 +76,7 @@ target_link_libraries(${TESTNAME} gtest gmock gtest_main)
 add_test(${TESTNAME} ${TESTNAME}Tests)
 
 #sections
-set(TESTNAME Sections)
+set(TESTNAME SectionsTests)
 
 project(${TESTNAME})
 
@@ -85,6 +85,25 @@ enable_testing()
 set(SOURCEFILES
         ${CMAKE_SOURCE_DIR}/debugger/devices/unit_tests/SectionTests.cpp
         ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Sections.cpp)
+
+enable_testing()
+
+add_executable(
+        ${TESTNAME}
+        ${SOURCEFILES}
+)
+target_link_libraries(${TESTNAME} gtest gmock gtest_main)
+add_test(${TESTNAME} ${TESTNAME}Tests)
+
+set(TESTNAME DumpperTests)
+
+project(${TESTNAME})
+
+set(BASEPATH "${CMAKE_SOURCE_DIR}")
+enable_testing()
+set(SOURCEFILES
+        ${CMAKE_SOURCE_DIR}/debugger/devices/unit_tests/DumpperTests.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/Dumpper.cpp)
 
 enable_testing()
 

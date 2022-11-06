@@ -68,6 +68,7 @@ uint8_t Memory::ReadMemory8(uint32_t address)
 
 void Memory::allocateMemory(uint32_t memorySize, std::string permission)
 {
+    /*one address is 1 byte*/
     permission_ = std::move(permission);
     memorySize_ = memorySize;
     for(uint32_t i = 0x0; i < memorySize; i++)
