@@ -54,6 +54,7 @@ void Dumpper::SetDumpFilename(std::string filename)
 {
     filename_ = std::move(filename);
 }
+
 std::string Dumpper::ConvertUint8ToString(uint8_t num) const
 {
     std::map<uint8_t, std::string> mapper;
@@ -83,6 +84,7 @@ std::string Dumpper::ConvertUint8ToString(uint8_t num) const
     data += it->second;
     return data;
 }
+
 void Dumpper::WriteData(const std::string& dumpData) const
 {
     std::fstream fd("/tmp/" + filename_, std::ios_base::out);

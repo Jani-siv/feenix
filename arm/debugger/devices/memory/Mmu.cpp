@@ -98,6 +98,7 @@ std::string Mmu::getSectionName(uint32_t address)
     }
     return secName;
 }
+
 uint32_t Mmu::ConvertLmaToVectorPosition(uint32_t address)
 {
     if (address % 0x4 == 0)
