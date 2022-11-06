@@ -52,3 +52,45 @@ add_executable(
 )
 target_link_libraries(${TESTNAME} gtest gmock gtest_main)
 add_test(${TESTNAME} ${TESTNAME}Tests)
+
+#mmu
+set(TESTNAME Mmu)
+
+project(${TESTNAME})
+
+set(BASEPATH "${CMAKE_SOURCE_DIR}")
+enable_testing()
+set(SOURCEFILES
+        ${CMAKE_SOURCE_DIR}/debugger/devices/unit_tests/MmuTests.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Mmu.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Memory.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Sections.cpp)
+
+enable_testing()
+
+add_executable(
+        ${TESTNAME}
+        ${SOURCEFILES}
+)
+target_link_libraries(${TESTNAME} gtest gmock gtest_main)
+add_test(${TESTNAME} ${TESTNAME}Tests)
+
+#sections
+set(TESTNAME Sections)
+
+project(${TESTNAME})
+
+set(BASEPATH "${CMAKE_SOURCE_DIR}")
+enable_testing()
+set(SOURCEFILES
+        ${CMAKE_SOURCE_DIR}/debugger/devices/unit_tests/SectionTests.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Sections.cpp)
+
+enable_testing()
+
+add_executable(
+        ${TESTNAME}
+        ${SOURCEFILES}
+)
+target_link_libraries(${TESTNAME} gtest gmock gtest_main)
+add_test(${TESTNAME} ${TESTNAME}Tests)
