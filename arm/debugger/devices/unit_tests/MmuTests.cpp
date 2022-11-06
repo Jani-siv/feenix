@@ -20,8 +20,8 @@ TEST_F(MmuTest, memoryAllocation)
     Mmu sut;
     sut.CreateMemory("RAM", 0x20000000, 2000000, "RW");
     sut.CreateSections(".text",0x8,0x20000000,0x9c);
-    sut.WriteData(0x20000000, 0xFF);
-    EXPECT_EQ(sut.ReadData(0x20000000),0xFF);
+    sut.WriteData32(0x20000000, 0xFF);
+    EXPECT_EQ(sut.ReadData32(0x20000000), 0xFF);
 }
 
 } // namespace unittest

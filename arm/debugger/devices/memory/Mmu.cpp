@@ -24,20 +24,52 @@ void Mmu::CreateSections(const std::string& name, uint32_t size, uint32_t vma, u
     sections_[name]=sec;
 }
 
-void Mmu::WriteData(uint32_t address, uint32_t data)
+void Mmu::WriteData32(uint32_t address, uint32_t data)
 {
     MemoryName memName = getMemoryName(address);
     SectionName secName = getSectionName(address);
     uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
-    memory_[memName].WriteMemory(transformedAddress,data);
+    memory_[memName].WriteMemory32(transformedAddress, data);
 }
 
-uint32_t Mmu::ReadData(uint32_t address)
+void Mmu::WriteData16(uint32_t address, uint16_t data)
 {
     MemoryName memName = getMemoryName(address);
     SectionName secName = getSectionName(address);
     uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
-    return memory_[memName].ReadMemory(transformedAddress);
+    memory_[memName].WriteMemory16(transformedAddress, data);
+}
+
+void Mmu::WriteData8(uint32_t address, uint8_t data)
+{
+    MemoryName memName = getMemoryName(address);
+    SectionName secName = getSectionName(address);
+    uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
+    memory_[memName].WriteMemory8(transformedAddress, data);
+}
+
+uint32_t Mmu::ReadData32(uint32_t address)
+{
+    MemoryName memName = getMemoryName(address);
+    SectionName secName = getSectionName(address);
+    uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
+    return memory_[memName].ReadMemory32(transformedAddress);
+}
+
+uint16_t Mmu::ReadData16(uint32_t address)
+{
+    MemoryName memName = getMemoryName(address);
+    SectionName secName = getSectionName(address);
+    uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
+    return memory_[memName].ReadMemory16(transformedAddress);
+}
+
+uint8_t Mmu::ReadData8(uint32_t address)
+{
+    MemoryName memName = getMemoryName(address);
+    SectionName secName = getSectionName(address);
+    uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
+    return memory_[memName].ReadMemory8(transformedAddress);
 }
 
 std::string Mmu::getMemoryName(uint32_t address)
