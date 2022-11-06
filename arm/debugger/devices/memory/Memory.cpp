@@ -7,7 +7,6 @@ namespace memory {
 
 void Memory::WriteMemory32(uint32_t address, uint32_t data)
 {
-
     if (address < memorySize_ && permission_.length() > 1)
     {
         WriteMemory16(address, (data & 0x0000FFFF));
@@ -18,7 +17,6 @@ void Memory::WriteMemory32(uint32_t address, uint32_t data)
 
 void Memory::WriteMemory16(uint32_t address, uint16_t data)
 {
-
     if (address < memorySize_ && permission_.length() > 1)
     {
         WriteMemory8(address,(data & 0x00FF));
@@ -29,7 +27,6 @@ void Memory::WriteMemory16(uint32_t address, uint16_t data)
 
 void Memory::WriteMemory8(uint32_t address, uint8_t data)
 {
-
     if (address < memorySize_ && permission_.length() > 1)
     {
         memory_.at(address) = data;

@@ -16,11 +16,10 @@ void Mmu::CreateMemory(const std::string& memoryName, uint32_t startAddr, uint32
     memoryVmaStartPoint_[memoryName]=startAddr;
 }
 
-void Mmu::CreateSections(const std::string& name, uint32_t size, uint32_t vma, uint32_t lma)
+void Mmu::CreateSections(const std::string& name, uint32_t vma, uint32_t lma)
 {
     Sections sec;
-    sec.InitSection(sectionIdNum_,size,vma,lma);
-    sectionIdNum_++;
+    sec.InitSection(vma,lma);
     sections_[name]=sec;
 }
 

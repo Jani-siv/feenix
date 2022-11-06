@@ -18,7 +18,7 @@ public:
 TEST_F(SectionsTest, firstTest)
 {
     Sections sut;
-    sut.InitSection(1,0x8, 0x20000000, 0x9c);
+    sut.InitSection(0x20000000, 0x9c);
     EXPECT_EQ(0x9c, sut.GetLmaMapping(0x20000000));
 }
 
