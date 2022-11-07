@@ -12,7 +12,6 @@ public:
     {}
     void TearDown() override
     {}
-
 };
 
 TEST_F(RegistersTest, readRegister)
