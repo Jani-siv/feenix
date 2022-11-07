@@ -30,7 +30,6 @@ void Dumpper::DumpMemoryDataToFile(const std::vector<uint16_t>& data) const
 
 void Dumpper::DumpMemoryDataToFile(const std::vector<uint8_t>& data) const
 {
-
     std::stringstream ss;
     size_t counter = 0;
     for (auto &i : data)
@@ -50,6 +49,7 @@ void Dumpper::DumpMemoryDataToFile(const std::vector<uint8_t>& data) const
     dumpData = ss.str();
     WriteData(dumpData);
 }
+
 void Dumpper::SetDumpFilename(std::string filename)
 {
     filename_ = std::move(filename);

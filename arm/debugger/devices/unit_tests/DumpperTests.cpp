@@ -11,7 +11,6 @@ public:
     {}
     void TearDown() override
     {}
-
 };
 
 TEST_F(DumpperTest, firstest)

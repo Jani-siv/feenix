@@ -1,7 +1,5 @@
 *** Settings ***
 Library    ./Libraries/Framework.py
-Library           Process
-
 
 *** Variables ***
 ${number1}  ${10}

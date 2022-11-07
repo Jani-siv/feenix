@@ -31,4 +31,3 @@ def check_memory_layout_elf_file(filename):
         else:
             return False
     return True
-
