@@ -8,7 +8,7 @@ set(CMAKE_C_STANDARD 11)
 project (Debugger-arm-m3)
 set(SOURCE_FILES
         ${CMAKE_SOURCE_DIR}/debugger/main.cpp
-        ${CMAKE_SOURCE_DIR}/debugger/devices/Init.cpp)
+        ${CMAKE_SOURCE_DIR}/debugger/Init.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
