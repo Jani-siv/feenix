@@ -124,7 +124,8 @@ set(BASEPATH "${CMAKE_SOURCE_DIR}")
 enable_testing()
 set(SOURCEFILES
         ${CMAKE_SOURCE_DIR}/debugger/devices/unit_tests/ElfLoaderTests.cpp
-        ${CMAKE_SOURCE_DIR}/debugger/ElfLoader.cpp)
+        ${CMAKE_SOURCE_DIR}/debugger/ElfLoader.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/MemMsg.cpp)
 
 enable_testing()
 
