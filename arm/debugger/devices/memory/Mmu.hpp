@@ -17,7 +17,7 @@ class Mmu {
 public:
     Mmu()=default;
     ~Mmu()=default;
-    void CreateMemory(const std::vector<MemMsg>& memoryLayout);
+    void CreateMemory(const std::vector<MemMsg>& message);
     void CreateSections(const std::string& name, uint32_t vma, uint32_t lma);
     uint32_t ReadData32(uint32_t address);
     uint16_t ReadData16(uint32_t address);
@@ -33,6 +33,7 @@ private:
     std::map<MemoryName, uint32_t> memoryVmaStartPoint_;
     std::map<SectionName, Sections> sections_;
     std::vector<MemoryLayout> memLayout_;
+    std::vector<std::pair<addr, payload>> dissAss_;
 };
 
 } // namespace memory

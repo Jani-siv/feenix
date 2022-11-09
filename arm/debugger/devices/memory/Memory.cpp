@@ -7,7 +7,8 @@ namespace memory {
 
 void Memory::WriteMemory32(uint32_t address, uint32_t data)
 {
-    if (address < memorySize_ && permission_.length() > 1)
+    //todo permission
+    if (address < memorySize_ )//&& permission_.length() > 1)
     {
         WriteMemory16(address, (data & 0x0000FFFF));
         data = data >> 16;

@@ -1,4 +1,6 @@
 #include "Init.hpp"
+#include "devices/memory/Memory.hpp"
+#include "devices/memory/Mmu.hpp"
 
 namespace debugger {
 
@@ -13,6 +15,8 @@ Init::Init()
         printf("DEBUG: start address %u\n",i.GetMemLayout().at(0).startingAddress);
         printf("DEBUG: memory size %u\n",i.GetMemLayout().at(0).dataLength);
     }
+    devices::memory::Mmu mmu;
+    mmu.CreateMemory(msg);
 }
 
 } // namespace debugger

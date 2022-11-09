@@ -7,19 +7,35 @@ namespace memory {
 
 constexpr uint32_t u32inBytes = 4;
 
-void Mmu::CreateMemory(const std::vector<MemMsg>& memoryLayout)
+void Mmu::CreateMemory(const std::vector<MemMsg>& message)
 {
-    for (auto i: memoryLayout) {
+    for (auto i: message) {
         for (auto j : i.GetMemLayout()) {
             memLayout_.push_back(j);
         }
+        for (auto k : i.GetPayloadForMemory()) {
+            if (!k.dissAssData.empty())
+            {
+                for (auto l : k.dissAssData)
+                {
+                    dissAss_.push_back(l);
+                }
+            }
+        }
     }
+    //todo new private functions for these below
+    //create memory
     for (const auto& i: memLayout_) {
         Memory mem;
         uint32_t bytes = (i.dataLength - (i.dataLength % u32inBytes)) / u32inBytes;
         mem.allocateMemory(bytes, i.permission);
         memory_[i.name] = mem;
         memoryVmaStartPoint_[i.name] = i.startingAddress;
+    }
+    //write data to memory
+    for (auto i : dissAss_)
+    {
+        WriteData32(i.first,i.second);
     }
 }
 
