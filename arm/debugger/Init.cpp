@@ -13,10 +13,10 @@ Init::Init()
     std::vector<devices::memory::MemMsg> msg = loader->GetMemoryLayout();
     for (auto i : msg)
     {
-        printf("DEBUG:%s\n",i.GetMemLayout().at(0).name.c_str());
-        printf("DEBUG:%s\n",i.GetMemLayout().at(0).permission.c_str());
-        printf("DEBUG:%u\n",i.GetMemLayout().at(0).startingAddress);
-        printf("DEBUG:%u\n",i.GetMemLayout().at(0).dataLength);
+        printf("DEBUG: name %s\n",i.GetMemLayout().at(0).name.c_str());
+        printf("DEBUG: permission %s\n",i.GetMemLayout().at(0).permission.c_str());
+        printf("DEBUG: start address %u\n",i.GetMemLayout().at(0).startingAddress);
+        printf("DEBUG: memory size %u\n",i.GetMemLayout().at(0).dataLength);
     }
 }
 

@@ -7,15 +7,23 @@ namespace memory {
 
 constexpr uint32_t u32inBytes = 4;
 
-void Mmu::CreateMemory(const std::string& memoryName, uint32_t startAddr, uint32_t sizeInBytes, std::string permission)
+void Mmu::CreateMemory(const std::vector<MemMsg>& memoryLayout)
 {
-    Memory mem;
-    uint32_t bytes = (sizeInBytes - (sizeInBytes % u32inBytes)) / u32inBytes;
-    mem.allocateMemory(bytes, std::move(permission));
-    memory_[memoryName]=mem;
-    memoryVmaStartPoint_[memoryName]=startAddr;
-}
 
+    for (auto i: memoryLayout) {
+        for (auto j : i.GetMemLayout()) {
+            memLayout_.push_back(j);
+        }
+    }
+    for (const auto& i: memLayout_) {
+        Memory mem;
+        uint32_t bytes = (i.dataLength - (i.dataLength % u32inBytes)) / u32inBytes;
+        mem.allocateMemory(bytes, i.permission);
+        memory_[i.name] = mem;
+        memoryVmaStartPoint_[i.name] = i.startingAddress;
+    }
+
+}
 void Mmu::CreateSections(const std::string& name, uint32_t vma, uint32_t lma)
 {
     Sections sec;

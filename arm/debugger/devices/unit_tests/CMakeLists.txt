@@ -63,6 +63,8 @@ enable_testing()
 set(SOURCEFILES
         ${CMAKE_SOURCE_DIR}/debugger/devices/unit_tests/MmuTests.cpp
         ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Mmu.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/MemMsg.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/ElfLoader.cpp
         ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Memory.cpp
         ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Sections.cpp)
 
