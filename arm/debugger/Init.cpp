@@ -2,11 +2,6 @@
 
 namespace debugger {
 
-void Init::LoadAndCreateMemoryLayout()
-{
-
-}
-
 Init::Init()
 {
     loader = std::make_shared<ElfLoader>("/home/jani/feenix/arm/debugger/config.txt");

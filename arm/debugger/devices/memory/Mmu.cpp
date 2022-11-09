@@ -9,7 +9,6 @@ constexpr uint32_t u32inBytes = 4;
 
 void Mmu::CreateMemory(const std::vector<MemMsg>& memoryLayout)
 {
-
     for (auto i: memoryLayout) {
         for (auto j : i.GetMemLayout()) {
             memLayout_.push_back(j);
@@ -22,8 +21,8 @@ void Mmu::CreateMemory(const std::vector<MemMsg>& memoryLayout)
         memory_[i.name] = mem;
         memoryVmaStartPoint_[i.name] = i.startingAddress;
     }
-
 }
+
 void Mmu::CreateSections(const std::string& name, uint32_t vma, uint32_t lma)
 {
     Sections sec;

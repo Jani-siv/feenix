@@ -3,10 +3,8 @@
 #include <string>
 #include <map>
 #include <vector>
-
 #include "devices/memory/MemMsg.hpp"
 
-//todo Move linkerscript in own object file
 namespace debugger {
 
 using configAttribute = std::string;

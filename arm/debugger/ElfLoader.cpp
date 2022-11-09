@@ -1,15 +1,17 @@
-#include <fstream>
 #include "ElfLoader.hpp"
+#include <fstream>
+#include <utility>
 #include "devices/memory/MemMsg.hpp"
 
 namespace debugger {
 
 ElfLoader::ElfLoader(std::string configFile)
 {
-    configFile_ = configFile;
+    configFile_ = std::move(configFile);
     ReadConfigFile();
     ParseMemory();
 }
+
 void ElfLoader::ReadConfigFile()
 {
     std::ifstream fd(configFile_, std::ios_base::in);
@@ -28,9 +30,9 @@ void ElfLoader::ReadConfigFile()
             configAttribute att = line.substr(0,endpos);
             config_[att]= line.substr(endpos+2,line.length()-(endpos+2));
         }
-
     }
 }
+
 void ElfLoader::ParseMemory()
 {
     auto pointer = config_.find("LinkScript");
@@ -61,7 +63,6 @@ void ElfLoader::ParseMemory()
         //todo error handling
         return;
     }
-
 }
 
 size_t ElfLoader::findFirstChar(std::string& str)
@@ -75,6 +76,7 @@ size_t ElfLoader::findFirstChar(std::string& str)
     }
     return str.length()+1;
 }
+
 size_t ElfLoader::findFirstNum(std::string &str)
 {
     for (auto i = 0; i < str.length(); i++)
@@ -86,6 +88,7 @@ size_t ElfLoader::findFirstNum(std::string &str)
     }
     return str.length()+1;
 }
+
 void ElfLoader::ParseMemoryLines(std::vector<std::string> memoryLines)
 {
     for (auto& i : memoryLines)
