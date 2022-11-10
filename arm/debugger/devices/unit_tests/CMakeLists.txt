@@ -63,6 +63,8 @@ enable_testing()
 set(SOURCEFILES
         ${CMAKE_SOURCE_DIR}/debugger/devices/unit_tests/MmuTests.cpp
         ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Mmu.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/MemMsg.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/ElfLoader.cpp
         ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Memory.cpp
         ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Sections.cpp)
 
@@ -95,6 +97,7 @@ add_executable(
 target_link_libraries(${TESTNAME} gtest gmock gtest_main)
 add_test(${TESTNAME} ${TESTNAME}Tests)
 
+#dumpertests
 set(TESTNAME DumpperTests)
 
 project(${TESTNAME})
@@ -104,6 +107,27 @@ enable_testing()
 set(SOURCEFILES
         ${CMAKE_SOURCE_DIR}/debugger/devices/unit_tests/DumpperTests.cpp
         ${CMAKE_SOURCE_DIR}/debugger/devices/Dumpper.cpp)
+
+enable_testing()
+
+add_executable(
+        ${TESTNAME}
+        ${SOURCEFILES}
+)
+target_link_libraries(${TESTNAME} gtest gmock gtest_main)
+add_test(${TESTNAME} ${TESTNAME}Tests)
+
+#ElfLoadertests
+set(TESTNAME ElfLoaderTests)
+
+project(${TESTNAME})
+
+set(BASEPATH "${CMAKE_SOURCE_DIR}")
+enable_testing()
+set(SOURCEFILES
+        ${CMAKE_SOURCE_DIR}/debugger/devices/unit_tests/ElfLoaderTests.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/ElfLoader.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/MemMsg.cpp)
 
 enable_testing()
 
