@@ -35,7 +35,7 @@ void Mmu::CreateMemory(const std::vector<MemMsg>& message)
     //write data to memory
     for (auto i : dissAss_)
     {
-        WriteData32(i.first,i.second);
+        this->memory_["rom"].WriteMemory32(i.first,i.second);
     }
 }
 
@@ -54,22 +54,6 @@ void Mmu::WriteData32(uint32_t address, uint32_t data)
     memory_[memName].WriteMemory32(ConvertLmaToVectorPosition(transformedAddress), data);
 }
 
-void Mmu::WriteData16(uint32_t address, uint16_t data)
-{
-    MemoryName memName = getMemoryName(address);
-    SectionName secName = getSectionName(address);
-    uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
-    memory_[memName].WriteMemory16(ConvertLmaToVectorPosition(transformedAddress), data);
-}
-
-void Mmu::WriteData8(uint32_t address, uint8_t data)
-{
-    MemoryName memName = getMemoryName(address);
-    SectionName secName = getSectionName(address);
-    uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
-    memory_[memName].WriteMemory8(ConvertLmaToVectorPosition(transformedAddress), data);
-}
-
 uint32_t Mmu::ReadData32(uint32_t address)
 {
     MemoryName memName = getMemoryName(address);
@@ -78,21 +62,6 @@ uint32_t Mmu::ReadData32(uint32_t address)
     return memory_[memName].ReadMemory32(ConvertLmaToVectorPosition(transformedAddress));
 }
 
-uint16_t Mmu::ReadData16(uint32_t address)
-{
-    MemoryName memName = getMemoryName(address);
-    SectionName secName = getSectionName(address);
-    uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
-    return memory_[memName].ReadMemory16(ConvertLmaToVectorPosition(transformedAddress));
-}
-
-uint8_t Mmu::ReadData8(uint32_t address)
-{
-    MemoryName memName = getMemoryName(address);
-    SectionName secName = getSectionName(address);
-    uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
-    return memory_[memName].ReadMemory8(ConvertLmaToVectorPosition(transformedAddress));
-}
 
 std::string Mmu::getMemoryName(uint32_t address)
 {
@@ -129,6 +98,23 @@ uint32_t Mmu::ConvertLmaToVectorPosition(uint32_t address)
         return (address / 4);
     }
     return 0;
+}
+void Mmu::DumpMemoryInFile(std::string filename, uint32_t startAddress, uint32_t endAddress)
+{
+    dump.SetDumpFilename(std::move(filename));
+    std::string memoryName = getMemoryName(startAddress);
+    std::vector<uint32_t> data;
+    auto memSize = memory_[memoryName].GetMemorySize();
+    if ((endAddress/4) > memSize)
+    {
+        endAddress = memSize;
+    }
+    for (auto i = 0x0; i < endAddress; i++)
+    {
+        data.push_back(memory_[memoryName].ReadMemory32(i*4));
+    }
+   // memory_[memoryName].PrintMemory();
+    dump.DumpMemoryDataToFile(data);
 }
 
 } // namespace memory

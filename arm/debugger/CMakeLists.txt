@@ -12,7 +12,8 @@ set(SOURCE_FILES
         ${CMAKE_SOURCE_DIR}/debugger/ElfLoader.cpp
         ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Mmu.cpp
         ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Memory.cpp
-        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Sections.cpp)
+        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Sections.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/Dumpper.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 

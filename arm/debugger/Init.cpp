@@ -17,6 +17,7 @@ Init::Init()
     }
     devices::memory::Mmu mmu;
     mmu.CreateMemory(msg);
+    mmu.DumpMemoryInFile("testi.txt", 0x0, 0x98);
 }
 
 } // namespace debugger
