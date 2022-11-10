@@ -99,6 +99,7 @@ uint32_t Mmu::ConvertLmaToVectorPosition(uint32_t address)
     }
     return 0;
 }
+
 void Mmu::DumpMemoryInFile(std::string filename, uint32_t startAddress, uint32_t endAddress)
 {
     dump.SetDumpFilename(std::move(filename));
@@ -109,9 +110,11 @@ void Mmu::DumpMemoryInFile(std::string filename, uint32_t startAddress, uint32_t
     {
         endAddress = memSize;
     }
-    for (auto i = 0x0; i < endAddress; i++)
-    {
-        data.push_back(memory_[memoryName].ReadMemory32(i*4));
+    for (auto i = 0x0; i < endAddress; i++) {
+        if ((i % 4 == 0) || (i == 0x0)) {
+            data.push_back(memory_[memoryName].ReadMemory32(i));
+
+        }
     }
    // memory_[memoryName].PrintMemory();
     dump.DumpMemoryDataToFile(data);

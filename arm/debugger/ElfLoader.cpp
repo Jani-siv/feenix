@@ -132,16 +132,23 @@ void ElfLoader::ParseDissAss()
     auto pointer = config_.find("DissAss");
     if (pointer!= config_.end()) {
         std::ifstream fd(pointer->second.c_str(), std::ios_base::in);
-        std::string line;
+        std::string originline;
         devices::memory::DissAss dissAss;
         while(!fd.eof())
         {
-            std::getline(fd,line);
-            if (findFirstNum(line) > 1 && findFirstNum(line) < line.length() && findFirstChar(line) > 3)
+            std::getline(fd, originline);
+            if (findFirstNum(originline) > 1 && findFirstNum(originline) < originline.length() && findFirstChar(originline) > 1)
             {
-                line = line.substr(findFirstNum(line), line.find(" \t")- findFirstNum(line));
-                std::string first = line.substr(0,line.find(':'));
-                std::string second = line.substr(line.find(":\t")+2, line.length()-line.find(":\t"));
+                if (findFirstChar(originline) < findFirstNum(originline))
+                {
+                    originline = originline.substr(findFirstChar(originline), originline.find(" \t") - findFirstChar(originline));
+                }
+                else {
+                    originline = originline.substr(findFirstNum(originline), originline.find(" \t") - findFirstNum(originline));
+                }
+                std::string first = originline.substr(0, originline.find(':'));
+                printf("%s\n", originline.c_str());
+                std::string second = originline.substr(originline.find(":\t") + 2, originline.length() - originline.find(":\t"));
                 std::pair<devices::memory::addr ,devices::memory::payload > test;
                 test = std::make_pair(std::stoul(first, nullptr, 16),std::stoul(second,nullptr, 16));
                 dissAss.dissAssData.push_back(test);
@@ -149,6 +156,10 @@ void ElfLoader::ParseDissAss()
         }
         auto it = memory_.begin();
         it->SavePayload(dissAss);
+        for (auto i : dissAss.dissAssData)
+        {
+            printf("%X\n",i.first);
+        }
     }
 }
 
