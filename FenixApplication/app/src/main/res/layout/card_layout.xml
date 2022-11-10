@@ -20,7 +20,7 @@
         <TextView
             android:id="@+id/device_name"
             android:layout_width="150dp"
-            android:layout_height="20dp"
+            android:layout_height="50dp"
             android:gravity="center|center_horizontal|center_vertical"
             android:textSize="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -28,11 +28,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
+
         <TextView
             android:id="@+id/device_status"
             android:layout_width="100dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="10dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="5dp"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:textSize="30dp"
             android:background="@color/teal_700"
             app:layout_constraintTop_toTopOf="@+id/device_name"
             app:layout_constraintEnd_toStartOf="@+id/device_name"
@@ -41,8 +44,10 @@
         <TextView
             android:id="@+id/device_lastactivity"
             android:layout_width="100dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="10dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="5dp"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:textSize="30dp"
             android:background="@color/teal_200"
             app:layout_constraintTop_toTopOf="@+id/device_name"
             app:layout_constraintBottom_toBottomOf="@+id/device_name"
