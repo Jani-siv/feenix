@@ -6,5 +6,4 @@ arm-none-eabi-ld -T linkscript.ld -o ${NAME}.elf startup.o cstart.o --print-map 
 arm-none-eabi-objcopy -O binary ${NAME}.elf ${NAME}.bin
 arm-none-eabi-objdump -S ${NAME}.elf > ${NAME}1.list
 arm-none-eabi-objdump -d ${NAME}.elf
-
-
+arm-none-eabi-objcopy -O ihex ${NAME}.elf ${NAME}.hex

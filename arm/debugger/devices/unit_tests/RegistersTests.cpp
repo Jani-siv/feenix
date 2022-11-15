@@ -17,15 +17,15 @@ public:
 TEST_F(RegistersTest, readRegister)
 {
     Registers sut;
-    EXPECT_EQ(0x0,sut.readRegister("r0"));
-    EXPECT_EQ(0xFFFFFFFF,sut.readRegister("fail"));
+    EXPECT_EQ(0x0,sut.readRegister(0x0));
+    EXPECT_EQ(0xFFFFFFFF,sut.readRegister(0xFF));
 }
 
 TEST_F(RegistersTest, writeRegister)
 {
     Registers sut;
-    sut.writeRegister("r5",0xDEADBEEF);
-    EXPECT_EQ(0xDEADBEEF,sut.readRegister("r5"));
+    sut.writeRegister(0x5,0xDEADBEEF);
+    EXPECT_EQ(0xDEADBEEF,sut.readRegister(0x5));
 }
 
 } // namespace unittest
