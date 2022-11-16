@@ -66,7 +66,8 @@ set(SOURCEFILES
         ${CMAKE_SOURCE_DIR}/debugger/devices/memory/MemMsg.cpp
         ${CMAKE_SOURCE_DIR}/debugger/ElfLoader.cpp
         ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Memory.cpp
-        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Sections.cpp)
+        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Sections.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/Dumpper.cpp)
 
 enable_testing()
 

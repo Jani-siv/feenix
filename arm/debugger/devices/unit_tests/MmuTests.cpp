@@ -21,10 +21,6 @@ TEST_F(MmuTest, memoryAllocation)
     std::vector<MemMsg> msg = loader.GetMemoryLayout();
     sut.CreateMemory(msg);
     sut.CreateSections(".text",0x20000000,0x9c);
-    sut.WriteData8(0x20000000, 0xBE);
-    EXPECT_EQ(sut.ReadData8(0x20000000), 0xBE);
-    sut.WriteData16(0x20000000, 0xBEEF);
-    EXPECT_EQ(sut.ReadData16(0x20000000), 0xBEEF);
     sut.WriteData32(0x20000000, 0xDEADBEEF);
     EXPECT_EQ(sut.ReadData32(0x20000000), 0xDEADBEEF);
     printf("Name: %s\n",sut.getMemoryName(0x0).c_str());

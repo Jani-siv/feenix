@@ -18,18 +18,13 @@ TEST_F(MemoryTest, IOmemory)
 {
     Memory sut;
     sut.allocateMemory(0x1000,"RW");
-    EXPECT_EQ(0x0, sut.ReadMemory8(0x0));
-    sut.WriteMemory8(0x0, 0xA0);
-    EXPECT_EQ(0xA0, sut.ReadMemory8(0x0));
-    sut.WriteMemory16(0x0, 0xA01B);
-    EXPECT_EQ(0xA01B, sut.ReadMemory16(0x0));
     sut.WriteMemory32(0x0, 0xA01BABCD);
     EXPECT_EQ(0xA01BABCD, sut.ReadMemory32(0x0));
     EXPECT_EQ(0x0, sut.ReadMemory32(0x5000));
     Memory sut1;
     sut1.allocateMemory(0x1000, "R");
-    sut1.WriteMemory16(0x0, 0xBEEF);
-    EXPECT_EQ(0x0, sut1.ReadMemory16(0x0));
+    sut1.WriteMemory32(0x0, 0xBEEF);
+    EXPECT_EQ(0x0, sut1.ReadMemory32(0x0));
     EXPECT_EQ(0x1000, sut1.GetMemorySize());
 }
 
