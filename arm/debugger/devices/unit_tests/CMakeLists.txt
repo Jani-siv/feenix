@@ -155,7 +155,28 @@ set(SOURCEFILES
         ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Memory.cpp
         ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Sections.cpp
         ${CMAKE_SOURCE_DIR}/debugger/devices/Dumpper.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/cpu/Ticks.cpp
         )
+enable_testing()
+
+add_executable(
+        ${TESTNAME}
+        ${SOURCEFILES}
+)
+target_link_libraries(${TESTNAME} gtest gmock gtest_main)
+add_test(${TESTNAME} ${TESTNAME}Tests)
+
+#ticksTests
+set(TESTNAME TicksTests)
+
+project(${TESTNAME})
+
+set(BASEPATH "${CMAKE_SOURCE_DIR}")
+enable_testing()
+set(SOURCEFILES
+        ${CMAKE_SOURCE_DIR}/debugger/devices/unit_tests/TicksTests.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/cpu/Ticks.cpp)
+
 enable_testing()
 
 add_executable(
