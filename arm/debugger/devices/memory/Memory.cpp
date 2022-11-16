@@ -43,9 +43,7 @@ uint32_t Memory::ReadMemory32(uint32_t address)
     if (address <= memorySize_)
     {
         uint16_t low = ReadMemory16(address+2);
-      //  printf("LOW16: %X\n",low);
         uint16_t high = ReadMemory16(address);
-      //  printf("HIGH16: %X\n",high);
         uint32_t data = high;
         data = data << 16;
         data += low;
@@ -72,7 +70,6 @@ uint8_t Memory::ReadMemory8(uint32_t address)
 {
     if (address <= memory_.size())
     {
-      //  printf("%X\n",address);
         return memory_.at(address);
     }
     return 0;

@@ -23,8 +23,6 @@ TEST_F(MmuTest, memoryAllocation)
     sut.CreateSections(".text",0x20000000,0x9c);
     sut.WriteData32(0x20000000, 0xDEADBEEF);
     EXPECT_EQ(sut.ReadData32(0x20000000), 0xDEADBEEF);
-    printf("Name: %s\n",sut.getMemoryName(0x0).c_str());
-    printf("Name: %s\n",sut.getMemoryName(0x20000000).c_str());
 }
 
 } // namespace unittest

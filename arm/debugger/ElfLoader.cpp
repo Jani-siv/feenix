@@ -147,7 +147,6 @@ void ElfLoader::ParseDissAss()
                     originline = originline.substr(findFirstNum(originline), originline.find(" \t") - findFirstNum(originline));
                 }
                 std::string first = originline.substr(0, originline.find(':'));
-                printf("%s\n", originline.c_str());
                 std::string second = originline.substr(originline.find(":\t") + 2, originline.length() - originline.find(":\t"));
                 std::pair<devices::memory::addr ,devices::memory::payload > test;
                 test = std::make_pair(std::stoul(first, nullptr, 16),std::stoul(second,nullptr, 16));
@@ -156,10 +155,6 @@ void ElfLoader::ParseDissAss()
         }
         auto it = memory_.begin();
         it->SavePayload(dissAss);
-        for (auto i : dissAss.dissAssData)
-        {
-            printf("%X\n",i.first);
-        }
     }
 }
 

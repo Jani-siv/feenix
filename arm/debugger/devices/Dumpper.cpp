@@ -8,10 +8,6 @@ namespace devices {
 
 void Dumpper::DumpMemoryDataToFile(std::vector<uint32_t>& data) const
 {
-    for (auto i : data)
-    {
-        printf("DEBUG: %X\n",i);
-    }
     std::vector<uint16_t> data16{};
     for (auto &i : data)
     {
@@ -21,7 +17,6 @@ void Dumpper::DumpMemoryDataToFile(std::vector<uint32_t>& data) const
         data16.push_back(high);
         data16.push_back(low);
     }
-
     DumpMemoryDataToFile(data16);
 }
 
