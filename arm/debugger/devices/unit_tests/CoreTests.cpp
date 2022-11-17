@@ -1,5 +1,8 @@
 #include <gtest/gtest.h>
+
+#include <utility>
 #include "../cpu/Core.hpp"
+#include "../../ElfLoader.hpp"
 
 namespace devices {
 namespace cpu {
@@ -17,6 +20,8 @@ public:
 class SUT : public Core
 {
 public:
+    explicit SUT(std::vector<devices::memory::MemMsg> msg) : Core(std::vector<devices::memory::MemMsg>(std::move(msg))){}
+    void dumpMemoryInFile(std::string filename, uint32_t startAddress, uint32_t len) override{}
     uint32_t comm{};
     [[nodiscard]] uint32_t GetTestValue() const {return comm;}
     std::shared_ptr<Ticks> clock_;
@@ -38,6 +43,8 @@ public:
     }
 };
 
+
+
 class CoreTest : public testing::Test
 {
 public:
@@ -49,10 +56,12 @@ public:
 
 TEST_F(CoreTest, firstTest)
 {
-    SUT Core;
+    debugger::ElfLoader loader("/home/jani/feenix/arm/debugger/config.txt");
+    std::vector<devices::memory::MemMsg> msg = loader.GetMemoryLayout();
+    SUT Core(msg);
     Core.SetCoreDebugMode("step");
     Core.StartCore();
-    EXPECT_EQ(0x0,Core.GetTestValue());
+    EXPECT_EQ(3925868550,Core.GetTestValue());
 }
 
 } // namespace cpu

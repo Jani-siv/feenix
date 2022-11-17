@@ -9,11 +9,12 @@ namespace cpu {
 
 class Core {
 public:
-    Core();
+    Core(std::vector<devices::memory::MemMsg> msg);
     ~Core() = default;
     virtual void SetCoreDebugMode(const std::string& mode);
     virtual void StartCore();
 protected:
+    virtual void dumpMemoryInFile(std::string filename, uint32_t startAddress, uint32_t len);
     uint32_t ReadPCRegister();
     uint32_t GetCommandFromMemory(uint32_t address);
     std::shared_ptr<registers::Registers> registers_;

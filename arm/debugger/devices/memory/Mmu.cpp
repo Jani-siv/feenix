@@ -56,10 +56,13 @@ void Mmu::WriteData32(uint32_t address, uint32_t data)
 
 uint32_t Mmu::ReadData32(uint32_t address)
 {
+    //todo bug in return
     MemoryName memName = getMemoryName(address);
     SectionName secName = getSectionName(address);
     uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
-    return memory_[memName].ReadMemory32(ConvertLmaToVectorPosition(transformedAddress));
+    printf("Debug:%s 0x%X : 0x%X\n",memName.c_str(),address, ConvertLmaToVectorPosition(transformedAddress));
+  //  return memory_[memName].ReadMemory32(ConvertLmaToVectorPosition(transformedAddress));
+  return memory_[memName].ReadMemory32(address);
 }
 
 
@@ -116,7 +119,7 @@ void Mmu::DumpMemoryInFile(std::string filename, uint32_t startAddress, uint32_t
 
         }
     }
-   // memory_[memoryName].PrintMemory();
+    //memory_[memoryName].PrintMemory();
     dump.DumpMemoryDataToFile(data);
 }
 

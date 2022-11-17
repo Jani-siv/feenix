@@ -25,8 +25,8 @@ void Memory::WriteMemory16(uint32_t address, uint16_t data)
         uint8_t low = (data & 0x00FF);
         data = data >> 8;
         uint8_t high = data;
-        WriteMemory8(address+2,low);
-        WriteMemory8(address+1,high);
+        WriteMemory8(address+1,low);
+        WriteMemory8(address,high);
     }
 }
 
@@ -56,8 +56,8 @@ uint16_t Memory::ReadMemory16(uint32_t address)
 {
     if (address <= memorySize_)
     {
-        auto low = ReadMemory8(address+2);
-        auto high = ReadMemory8(address+1);
+        auto low = ReadMemory8(address+1);
+        auto high = ReadMemory8(address);
         uint16_t data = high;
         data = data << 8;
         data +=low;
