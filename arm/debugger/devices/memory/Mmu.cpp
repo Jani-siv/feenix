@@ -56,11 +56,10 @@ void Mmu::WriteData32(uint32_t address, uint32_t data)
 
 uint32_t Mmu::ReadData32(uint32_t address)
 {
-    //todo bug in return
+    //todo no need for memory location modification
     MemoryName memName = getMemoryName(address);
     SectionName secName = getSectionName(address);
     uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
-    printf("Debug:%s 0x%X : 0x%X\n",memName.c_str(),address, ConvertLmaToVectorPosition(transformedAddress));
   //  return memory_[memName].ReadMemory32(ConvertLmaToVectorPosition(transformedAddress));
   return memory_[memName].ReadMemory32(address);
 }
