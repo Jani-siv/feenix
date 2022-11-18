@@ -21,6 +21,11 @@ std::string Assembler::Execute(uint32_t command)
     if(add_t2_sp_imm(command)) {return "ADD_T2_SP_IMM";}
     if(add_t1_sp_reg(command)) {return "ADD_T1_SP_REG";}
     if(add_t2_sp_reg(command)) {return "ADD_T2_SP_REG";}
+    if(and_imm(command)) {return "AND_IMM";}
+    if(and_reg(command)) {return "AND_REG";}
+    if(adr(command)) {return "ADR";}
+    if(asr_imm(command)) {return "ASR_IMM";}
+    if(asr_reg(command)) {return "ASR_REG";}
     return "nope";
 }
 bool Assembler::adc_t1(uint32_t command)
@@ -91,6 +96,44 @@ bool Assembler::add_t2_sp_reg(uint32_t command)
     CLR_FLAG(command,5);
     CLR_FLAG(command,6);
     return ((command - 0x4480) == 0);
+}
+bool Assembler::adr(uint32_t command)
+{
+    command = command >> 27;
+    return ((command - 0x14) == 0);
+}
+bool Assembler::and_imm(uint32_t command)
+{
+    //if rd && s == 1 see TST_imm
+    uint32_t temp = command;
+    temp = temp >> 15;
+    CLR_FLAG(command,26);
+    uint8_t s, rd;
+    s = (command&0x00100000);
+    s = s >> 20;
+    rd =(command&0x00000F00);
+    rd = rd >> 8;
+    command = command >> 20;
+    if ((command - 0xF00) == 0) {
+        if (s == 0x1 && rd == 0xF) { return false; }
+        return true;
+    }
+    return false;
+}
+bool Assembler::and_reg(uint32_t command)
+{
+    command = command >> 22;
+    return ((command - 0x100)==0);
+}
+bool Assembler::asr_imm(uint32_t command)
+{
+    command = command >> 27;
+    return ((command - 0x2)==0);
+}
+bool Assembler::asr_reg(uint32_t command)
+{
+    command = command >> 22;
+    return ((command - 0x104)==0);
 }
 
 

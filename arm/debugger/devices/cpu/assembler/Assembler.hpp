@@ -33,6 +33,11 @@ private:
     bool add_t2_sp_imm(uint32_t command);
     bool add_t1_sp_reg(uint32_t command);
     bool add_t2_sp_reg(uint32_t command);
+    bool adr(uint32_t command);
+    bool and_imm(uint32_t command);
+    bool and_reg(uint32_t command);
+    bool asr_imm(uint32_t command);
+    bool asr_reg(uint32_t command);
 };
 
 } //namespace assembler

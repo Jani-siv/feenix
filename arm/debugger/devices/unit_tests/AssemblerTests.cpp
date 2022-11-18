@@ -24,9 +24,13 @@ TEST_F(AssemblerTest, firstTest)
     command[0x44000000] = "ADD_T2_REG";
     command[0xA8000000] = "ADD_T1_SP_IMM";
     command[0xB0000000] = "ADD_T2_SP_IMM";
-  //  command[0x44850000] = "ADD_T1_SP_REG";  //dn and rdn
-    command[0x44680000] = "ADD_T1_SP_REG"; //rm
+    command[0x44680000] = "ADD_T1_SP_REG";
     command[0x44850000] = "ADD_T2_SP_REG";
+    command[0xA0000000] = "ADR";
+    command[0xF0000000] = "AND_IMM"; //todo TST need add for this
+    command[0x40000000] = "AND_REG";
+    command[0x10000000] = "ASR_IMM";
+    command[0x41000000] = "ASR_REG";
     for (auto& i : command) {
         EXPECT_EQ(sut.Execute(i.first), i.second);
     }
