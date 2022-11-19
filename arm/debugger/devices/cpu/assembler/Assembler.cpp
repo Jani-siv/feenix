@@ -8,99 +8,11 @@ namespace devices {
 namespace cpu {
 namespace assembler {
 
-
-std::string Assembler::Execute(uint32_t command)
-{
-    if(adc_t1(command)) {return "ADC_T1";}
-    if(adc_t2(command)) {return "ADC_T2";}
-    if(add_t1_imm(command)) {return "ADD_T1_IMM";}
-    if(add_t2_imm(command)) {return "ADD_T2_IMM";}
-    if(add_t1_reg(command)) {return "ADD_T1_REG";}
-    if(add_t2_reg(command)) {return "ADD_T2_REG";}
-    if(add_t1_sp_imm(command)) {return "ADD_T1_SP_IMM";}
-    if(add_t2_sp_imm(command)) {return "ADD_T2_SP_IMM";}
-    if(add_t1_sp_reg(command)) {return "ADD_T1_SP_REG";}
-    if(add_t2_sp_reg(command)) {return "ADD_T2_SP_REG";}
-    if(and_imm(command)) {return "AND_IMM";}
-    if(and_reg(command)) {return "AND_REG";}
-    if(adr(command)) {return "ADR";}
-    if(asr_imm(command)) {return "ASR_IMM";}
-    if(asr_reg(command)) {return "ASR_REG";}
-    return "nope";
-}
-bool Assembler::adc_t1(uint32_t command)
-{
-    command = command >> 22;
-    return ((command - 0x105) == 0);
-}
+//ARMv7-M
 bool Assembler::adc_t2(uint32_t command)
 {
     command = command >> 20;
     return ((command - 0x75A) == 0);
-}
-bool Assembler::add_t1_imm(uint32_t command)
-{
-    command = command >> 24;
-    return ((command - 0x1C) == 0);
-}
-bool Assembler::add_t2_imm(uint32_t command)
-{
-    command = command >> 27;
-    return ((command - 0x6) == 0);
-}
-bool Assembler::add_t1_reg(uint32_t command)
-{
-    command = command >> 25;
-    return ((command - 0xC) == 0);
-}
-bool Assembler::add_t2_reg(uint32_t command)
-{
-    uint32_t temp = command;
-    uint8_t rm, rdn ,dn;
-    temp = temp >> 16;
-    dn = (temp&0x80);
-    dn = dn >> 7;
-    rdn = dn;
-    rdn = rdn << 3;
-    rdn += (temp&0x7);
-    rm = (temp&0x78);
-    rm = rm >> 3;
-    if (rdn == 0xD || rm == 0xD) {return false;}
-    command = command >> 24;
-    return ((command - 0x44) == 0);
-}
-bool Assembler::add_t1_sp_imm(uint32_t command)
-{
-    command = command >> 27;
-    return ((command - 0x15) == 0);
-}
-bool Assembler::add_t2_sp_imm(uint32_t command)
-{
-    command = command >> 23;
-    return ((command - 0x160) == 0);
-}
-bool Assembler::add_t1_sp_reg(uint32_t command)
-{
-    command = command >> 16;
-    CLR_FLAG(command,0);
-    CLR_FLAG(command,1);
-    CLR_FLAG(command,2);
-    CLR_FLAG(command,7);
-    return ((command - 0x4468) == 0);
-}
-bool Assembler::add_t2_sp_reg(uint32_t command)
-{
-    command = command >> 16;
-    CLR_FLAG(command,3);
-    CLR_FLAG(command,4);
-    CLR_FLAG(command,5);
-    CLR_FLAG(command,6);
-    return ((command - 0x4480) == 0);
-}
-bool Assembler::adr(uint32_t command)
-{
-    command = command >> 27;
-    return ((command - 0x14) == 0);
 }
 bool Assembler::and_imm(uint32_t command)
 {
@@ -120,22 +32,197 @@ bool Assembler::and_imm(uint32_t command)
     }
     return false;
 }
-bool Assembler::and_reg(uint32_t command)
+
+std::string Assembler::ExecuteThumb(uint32_t command)
 {
-    command = command >> 22;
+    if(adc_reg(command)) {return "ADC_REG";}
+  //  if(adc_t2(command)) {return "ADC_T2";}
+    if(add_t1_imm(command)) {return "ADD_T1_IMM";}
+    if(add_t2_imm(command)) {return "ADD_T2_IMM";}
+    if(add_t1_reg(command)) {return "ADD_T1_REG";}
+    if(add_t2_reg(command)) {return "ADD_T2_REG";}
+    if(add_t1_sp_imm(command)) {return "ADD_T1_SP_IMM";}
+    if(add_t2_sp_imm(command)) {return "ADD_T2_SP_IMM";}
+    if(add_t1_sp_reg(command)) {return "ADD_T1_SP_REG";}
+    if(add_t2_sp_reg(command)) {return "ADD_T2_SP_REG";}
+  //  if(and_imm(command)) {return "AND_IMM";}
+    if(and_reg(command)) {return "AND_REG";}
+    if(adr(command)) {return "ADR";}
+    if(asr_imm(command)) {return "ASR_IMM";}
+    if(asr_reg(command)) {return "ASR_REG";}
+    if(b_t1(command)) {return "B_T1";}
+    if(b_t2(command)) {return "B_T2";}
+    if(bic_reg(command)) {return "BIC_REG";}
+    if(bkpt(command)) {return "BKPT";}
+    if(bx(command)) {return "BX";}
+    if(cmn(command)) {return "CMN";}
+    if(cmp_imm(command)) {return "CMP_IMM";}
+    if(cmp_t1_reg(command)) {return "CMP_T1_REG";}
+    if(cmp_t2_reg(command)) {return "CMP_T2_REG";}
+    if(eor(command)) {return "EOR";}
+    if(ldm(command)) {return "LDM";}
+    if(ldr_t1_imm(command)) {return  "LDR_T1_IMM";}
+    if(ldr_t2_imm(command)) {return  "LDR_T2_IMM";}
+    if(ldr_t1_lit(command)) {return  "LDR_T1_LIT";}
+    if(ldr_t1_reg(command)) {return  "LDR_T1_REG";}
+    return "nope";
+}
+bool Assembler::adc_reg(uint16_t command)
+{
+    command = command >> 6;
+    return ((command - 0x105) == 0);
+}
+bool Assembler::add_t1_imm(uint16_t command)
+{
+    command = command >> 8;
+    return ((command - 0x1C) == 0);
+}
+bool Assembler::add_t2_imm(uint16_t command)
+{
+    command = command >> 11;
+    return ((command - 0x6) == 0);
+}
+bool Assembler::add_t1_reg(uint16_t command)
+{
+    command = command >> 9;
+    return ((command - 0xC) == 0);
+}
+bool Assembler::add_t2_reg(uint16_t command)
+{
+    uint16_t temp = command;
+    uint8_t rm, rdn ,dn;
+    dn = (temp&0x80);
+    dn = dn >> 7;
+    rdn = dn;
+    rdn = rdn << 3;
+    rdn += (temp&0x7);
+    rm = (temp&0x78);
+    rm = rm >> 3;
+    if (rdn == 0xD || rm == 0xD) {return false;}
+    command = command >> 8;
+    return ((command - 0x44) == 0);
+}
+bool Assembler::add_t1_sp_imm(uint16_t command)
+{
+    command = command >> 11;
+    return ((command - 0x15) == 0);
+}
+bool Assembler::add_t2_sp_imm(uint16_t command)
+{
+    command = command >> 7;
+    return ((command - 0x160) == 0);
+}
+bool Assembler::add_t1_sp_reg(uint16_t command)
+{
+    CLR_FLAG(command,0);
+    CLR_FLAG(command,1);
+    CLR_FLAG(command,2);
+    CLR_FLAG(command,7);
+    return ((command - 0x4468) == 0);
+}
+bool Assembler::add_t2_sp_reg(uint16_t command)
+{
+    CLR_FLAG(command,3);
+    CLR_FLAG(command,4);
+    CLR_FLAG(command,5);
+    CLR_FLAG(command,6);
+    return ((command - 0x4480) == 0);
+}
+bool Assembler::adr(uint16_t command)
+{
+    command = command >> 11;
+    return ((command - 0x14) == 0);
+}
+bool Assembler::and_reg(uint16_t command)
+{
+    command = command >> 6;
     return ((command - 0x100)==0);
 }
-bool Assembler::asr_imm(uint32_t command)
+bool Assembler::asr_imm(uint16_t command)
 {
-    command = command >> 27;
+    command = command >> 11;
     return ((command - 0x2)==0);
 }
-bool Assembler::asr_reg(uint32_t command)
+bool Assembler::asr_reg(uint16_t command)
 {
-    command = command >> 22;
+    command = command >> 6;
     return ((command - 0x104)==0);
 }
-
+bool Assembler::b_t1(uint16_t command)
+{
+    command = command >> 12;
+    return ((command - 0xD)==0);
+}
+bool Assembler::b_t2(uint16_t command)
+{
+    command = command >> 11;
+    return ((command - 0x1C)==0);
+}
+bool Assembler::bic_reg(uint16_t command)
+{
+    command = command >> 6;
+    return ((command - 0x10E)==0);
+}
+bool Assembler::bkpt(uint16_t command)
+{
+    command = command >> 8;
+    return ((command - 0xBE)==0);
+}
+bool Assembler::bx(uint16_t command)
+{
+    command = command >> 7;
+    return ((command - 0x08E)==0);
+}
+bool Assembler::cmn(uint16_t command)
+{
+    command = command >> 6;
+    return ((command - 0x10B)==0);
+}
+bool Assembler::cmp_imm(uint16_t command)
+{
+    command = command >> 11;
+    return ((command - 0x5)==0);
+}
+bool Assembler::cmp_t1_reg(uint16_t command)
+{
+    command = command >> 6;
+    return ((command - 0x10A)==0);
+}
+bool Assembler::cmp_t2_reg(uint16_t command)
+{
+    command = command >> 8;
+    return ((command - 0x45)==0);
+}
+bool Assembler::eor(uint16_t command)
+{
+    command = command >> 6;
+    return ((command - 0x101)==0);
+}
+bool Assembler::ldm(uint16_t command)
+{
+    command = command >> 11;
+    return ((command - 0x19)==0);
+}
+bool Assembler::ldr_t1_imm(uint16_t command)
+{
+    command = command >> 11;
+    return ((command - 0xD)==0);
+}
+bool Assembler::ldr_t2_imm(uint16_t command)
+{
+    command = command >> 11;
+    return ((command - 0x13)==0);
+}
+bool Assembler::ldr_t1_lit(uint16_t command)
+{
+    command = command >> 11;
+    return ((command - 0x9)==0);
+}
+bool Assembler::ldr_t1_reg(uint16_t command)
+{
+    command = command >> 9;
+    return ((command - 0x2C)==0);
+}
 
 } //namespace assembler
 } //namespace cpu

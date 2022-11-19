@@ -20,24 +20,41 @@ class Assembler{
 public:
     Assembler()=default;
     ~Assembler()=default;
-    std::string Execute(uint32_t command);
+    std::string ExecuteThumb(uint32_t command);
 private:
     uint8_t apsrFlags_ = 0x0;
-    bool adc_t1(uint32_t command);
+    //thumb
+    bool adc_reg(uint16_t command);
+    bool add_t1_imm(uint16_t command);
+    bool add_t2_imm(uint16_t command);
+    bool add_t1_reg(uint16_t command);
+    bool add_t2_reg(uint16_t command);
+    bool add_t1_sp_imm(uint16_t command);
+    bool add_t2_sp_imm(uint16_t command);
+    bool add_t1_sp_reg(uint16_t command);
+    bool add_t2_sp_reg(uint16_t command);
+    bool adr(uint16_t command);
+    bool and_reg(uint16_t command);
+    bool asr_imm(uint16_t command);
+    bool asr_reg(uint16_t command);
+    bool b_t1(uint16_t command);
+    bool b_t2(uint16_t command);
+    bool bic_reg(uint16_t command);
+    bool bkpt(uint16_t command);
+    bool bx(uint16_t command);
+    bool cmn(uint16_t command);
+    bool cmp_imm(uint16_t command);
+    bool cmp_t1_reg(uint16_t command);
+    bool cmp_t2_reg(uint16_t command);
+    bool eor(uint16_t command);
+    bool ldm(uint16_t command);
+    bool ldr_t1_imm(uint16_t command);
+    bool ldr_t2_imm(uint16_t command);
+    bool ldr_t1_lit(uint16_t command);
+    bool ldr_t1_reg(uint16_t command);
+    //armv7-m
     bool adc_t2(uint32_t command);
-    bool add_t1_imm(uint32_t command);
-    bool add_t2_imm(uint32_t command);
-    bool add_t1_reg(uint32_t command);
-    bool add_t2_reg(uint32_t command);
-    bool add_t1_sp_imm(uint32_t command);
-    bool add_t2_sp_imm(uint32_t command);
-    bool add_t1_sp_reg(uint32_t command);
-    bool add_t2_sp_reg(uint32_t command);
-    bool adr(uint32_t command);
     bool and_imm(uint32_t command);
-    bool and_reg(uint32_t command);
-    bool asr_imm(uint32_t command);
-    bool asr_reg(uint32_t command);
 };
 
 } //namespace assembler
