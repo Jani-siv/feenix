@@ -20,7 +20,9 @@ public:
         fd.open("/tmp/linkscript.ld", std::ios_base::out);
         fd.write(ss.str().c_str(),static_cast<long>(ss.str().length()));
         fd.close();
-        std::string data = "00000000 <_Reset>:\n    0:\tea000006 \tb\t20 <Reset_Handler>\n";
+        std::string data = "00000000 <_Reset>:\n"
+                           "   0:\te006      \tb.n\t10 <Reset_Handler>\n"
+                           "   2:\te007      \tb.n\t14 <Undefined_Instruction>\n";
         fd.open("/tmp/boot1.list",std::ios_base::out);
         fd.write(data.c_str(),static_cast<long>(data.length()));
         fd.close();
@@ -36,6 +38,20 @@ public:
 TEST_F(ElfLoaderTest, firstTest)
 {
     ElfLoader sut("/tmp/config.txt");
+    auto mem = sut.GetMemoryLayout();
+    for (auto i : mem)
+    {
+        auto payload = i.GetPayloadForMemory();
+        for (auto j : payload)
+        {
+            for (auto k : j.dissAssData)
+            {
+                //printf("Debug: 0x%X : 0x%X\n", k.first, k.second);
+                EXPECT_EQ(0xE006,k.second);
+                break;
+            }
+        }
+    }
     EXPECT_FALSE(sut.GetMemoryLayout().empty());
 }
 
