@@ -46,7 +46,6 @@ TEST_F(ElfLoaderTest, firstTest)
         {
             for (auto k : j.dissAssData)
             {
-                //printf("Debug: 0x%X : 0x%X\n", k.first, k.second);
                 EXPECT_EQ(0xE006,k.second);
                 break;
             }

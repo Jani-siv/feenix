@@ -41,6 +41,7 @@ private:
     bool b_t2(uint16_t command);
     bool bic_reg(uint16_t command);
     bool bkpt(uint16_t command);
+    bool bl(uint16_t command);
     bool bx(uint16_t command);
     bool cmn(uint16_t command);
     bool cmp_imm(uint16_t command);

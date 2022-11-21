@@ -43,6 +43,7 @@ TEST_F(AssemblerTest, assemblerThumbInstructioSet)
     command[0xE000] = "B_T2";
     command[0x4380] = "BIC_REG";
     command[0xBE00] = "BKPT";
+    command[0xF000] = "BL";  //todo need fetch second part of command
     command[0x4700] = "BX";
     command[0x42C0] = "CMN";
     command[0x2800] = "CMP_IMM";

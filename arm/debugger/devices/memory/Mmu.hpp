@@ -25,6 +25,7 @@ public:
     uint32_t ReadData32(uint32_t address);
     void WriteData32(uint32_t address, uint32_t data);
     std::string getMemoryName(uint32_t address);
+    uint16_t ReadData16(uint16_t address);
 private:
     Dumpper dump;
     static uint32_t ConvertLmaToVectorPosition(uint32_t address);

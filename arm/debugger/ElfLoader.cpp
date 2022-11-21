@@ -126,6 +126,7 @@ void ElfLoader::ParseMemoryLines(std::vector<std::string> memoryLines)
         memory_.push_back(message);
     }
 }
+
 void ElfLoader::ParseDissAss()
 {
     //todo combine file opening in own function
@@ -147,16 +148,12 @@ void ElfLoader::ParseDissAss()
                 std::string address = originline.substr(0, originline.find(':'));
                 std::string value = originline.substr(originline.find(":\t") + 2, originline.length() - originline.find(":\t"));
                 auto pos = value.find(" ");
-                if (pos < 6)
+                constexpr size_t maxlen16bits = 6;
+                if (pos < maxlen16bits)
                 {
-                if (value.at(pos+1) != ' ' && pos+1 < value.length())
-                {
-                    //special case two 16 bits in one line
-                    AddTwoAddressAndValue(address,value,dissAss);
-                }
-                else {
-                AddOneAddressAndValue(address,value,dissAss);
-                }
+                (value.at(pos+1) != ' ' && pos+1 < value.length())?
+                AddTwoAddressAndValue(address,value,dissAss)
+                :AddOneAddressAndValue(address,value,dissAss);
                 }
             }
         }
@@ -164,23 +161,25 @@ void ElfLoader::ParseDissAss()
         it->SavePayload(dissAss);
     }
 }
+
 std::string ElfLoader::FirstIsChar(std::string originline)
 {
     return originline.substr(findFirstChar(originline), originline.find(" \t") - findFirstChar(originline));
 }
+
 std::string ElfLoader::FirstIsNum(std::string originline)
 {
     return originline.substr(findFirstNum(originline), originline.find(" \t") - findFirstNum(originline));
 }
+
 void ElfLoader::AddOneAddressAndValue(std::string address, std::string value,devices::memory::DissAss& dissAss)
 {
-    //printf("DEBUG:%s:%s\n", address.c_str(), value.c_str());
     std::pair<devices::memory::addr ,devices::memory::payload > test;
     value = value.substr(0, value.find(' '));
     test = std::make_pair(std::stoul(address, nullptr, 16), std::stoul(value, nullptr, 16));
     dissAss.dissAssData.push_back(test);
-
 }
+
 void ElfLoader::AddTwoAddressAndValue(std::string address, std::string value,devices::memory::DissAss& dissAss)
 {
     std::string val1 = value.substr(0,value.find(' ')+1);

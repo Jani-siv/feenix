@@ -54,6 +54,7 @@ std::string Assembler::ExecuteThumb(uint32_t command)
     if(b_t2(command)) {return "B_T2";}
     if(bic_reg(command)) {return "BIC_REG";}
     if(bkpt(command)) {return "BKPT";}
+    if(bl(command)) {return "BL";}
     if(bx(command)) {return "BX";}
     if(cmn(command)) {return "CMN";}
     if(cmp_imm(command)) {return "CMP_IMM";}
@@ -212,6 +213,11 @@ bool Assembler::bkpt(uint16_t command)
 {
     command = command >> 8;
     return ((command - 0xBE)==0);
+}
+bool Assembler::bl(uint16_t command)
+{
+    command = command >> 11;
+    return ((command - 0x1E)==0);
 }
 bool Assembler::bx(uint16_t command)
 {
