@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-
 #include <utility>
 #include "../cpu/Core.hpp"
 #include "../../ElfLoader.hpp"
@@ -42,8 +41,6 @@ public:
         }
     }
 };
-
-
 
 class CoreTest : public testing::Test
 {

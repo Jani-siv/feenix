@@ -3,7 +3,6 @@
 #include "devices/memory/Mmu.hpp"
 #include "devices/cpu/Core.hpp"
 
-
 namespace debugger {
 
 Init::Init()
