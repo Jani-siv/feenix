@@ -22,7 +22,11 @@ private:
     static size_t findFirstNum(std::string& str);
     void ParseMemoryLines(std::vector<std::string> memoryLines);
     void ParseDissAss();
-    void ParseSections();
+    std::string FirstIsChar(std::string originline);
+    std::string FirstIsNum(std::string originline);
+    void AddOneAddressAndValue(std::string address, std::string value,devices::memory::DissAss& dissAss);
+    void AddTwoAddressAndValue(std::string address, std::string value,devices::memory::DissAss& dissAss);
+        void ParseSections();
     void ParseDefinitions();
     std::string configFile_;
     std::map<configAttribute ,configPath> config_;

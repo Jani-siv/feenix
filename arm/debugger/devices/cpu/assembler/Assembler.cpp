@@ -183,6 +183,7 @@ bool Assembler::asr_reg(uint16_t command)
     command = command >> 6;
     return ((command - 0x104)==0);
 }
+//todo need second 16 bits for address
 bool Assembler::b_t1(uint16_t command)
 {
     uint16_t temp = (command&0x0F00);

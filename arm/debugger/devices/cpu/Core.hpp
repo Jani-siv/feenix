@@ -10,7 +10,7 @@ namespace cpu {
 
 class Core {
 public:
-    Core(std::vector<devices::memory::MemMsg> msg);
+    Core(const std::vector<devices::memory::MemMsg>& msg);
     ~Core() = default;
     virtual void SetCoreDebugMode(const std::string& mode);
     virtual void StartCore();

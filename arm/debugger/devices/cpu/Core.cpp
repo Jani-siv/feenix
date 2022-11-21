@@ -8,7 +8,7 @@ constexpr auto PSP = 14;
 constexpr auto LR = 15;
 constexpr auto PC = 16;
 
-Core::Core(std::vector<devices::memory::MemMsg> msg)
+Core::Core(const std::vector<devices::memory::MemMsg>& msg)
 {
     registers_ = std::make_shared<registers::Registers>();
     mmu_ = std::make_shared<memory::Mmu>();
