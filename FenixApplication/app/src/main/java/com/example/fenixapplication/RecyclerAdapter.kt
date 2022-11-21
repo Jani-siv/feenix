@@ -5,30 +5,35 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.fenixapplication.db.DeviceModel
 
-class RecyclerAdapter(private val devicesList : ArrayList<Devices>) : RecyclerView.Adapter<RecyclerAdapter.MyViewHolder>() {
+class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.DeviceViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.card_layout, parent, false)
-        return MyViewHolder(itemView)
+    private var stdList: ArrayList<DeviceModel> = ArrayList()
+
+    fun addItems( items : ArrayList<DeviceModel>) {
+        this.stdList = items
+        notifyDataSetChanged()
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val currentItem = devicesList[position]
-        holder.deviceName.text = currentItem.deviceName
-        holder.deviceStatus.text = currentItem.deviceStatus
-        holder.deviceLastActivity.text = currentItem.deviceLastActivity
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = DeviceViewHolder(
+        LayoutInflater.from(parent.context).inflate(R.layout.card_layout, parent, false)
+    )
+
+    override fun onBindViewHolder(holder: DeviceViewHolder, position: Int) {
+        val std = stdList[position]
+        holder.bindView(std)
     }
 
     override fun getItemCount(): Int {
-        return devicesList.size
+        return stdList.size
     }
 
-
-    class MyViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
-        val deviceName : TextView = itemView.findViewById(R.id.device_name)
-        val deviceStatus: TextView = itemView.findViewById(R.id.device_status)
-        val deviceLastActivity: TextView = itemView.findViewById(R.id.device_lastactivity)
+    class DeviceViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
+        private var deviceId = view.findViewById<TextView>(R.id.device_name)
+        fun bindView(std: DeviceModel) {
+            deviceId.text = std.deviceId
+        }
     }
 
 }

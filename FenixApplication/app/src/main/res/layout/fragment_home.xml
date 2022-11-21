@@ -1,173 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragments.Home">
 
     <TextView
         android:id="@+id/connections_title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="24dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_vertical"
         android:text="Connected devices"
-        android:textAlignment="center"
-        android:textSize="36sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="28dp"
         tools:ignore="MissingConstraints" />
 
     <RelativeLayout
-        android:layout_width="400dp"
-        android:layout_height="400dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/connections_title"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
         tools:ignore="MissingConstraints">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
-
-<!--
-        #1 Device info
-        <TextView
-            android:id="@+id/text_devicename_1"
-            android:layout_width="180dp"
-            android:layout_height="48dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:gravity="center|center_horizontal|center_vertical"
-            android:text="Name1"
-            app:layout_constraintBottom_toTopOf="@+id/text_devicename_2"
-            app:layout_constraintTop_toBottomOf="@+id/connections_title"
-            tools:ignore="MissingConstraints,NotSibling"
-            tools:layout_editor_absoluteX="100dp"
-            tools:visibility="visible" />
-
-        <TextView
-            android:id="@+id/text_deviceactivity_1"
-            android:layout_width="100dp"
-            android:layout_height="48dp"
-            android:layout_alignTop="@+id/text_devicename_1"
-            android:layout_alignBottom="@+id/text_devicename_1"
-            android:layout_toEndOf="@+id/text_devicename_1"
-            android:gravity="center|center_horizontal|center_vertical"
-            android:layout_marginLeft="10dp"
-            android:text="Last activity1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="parent"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
-            android:id="@+id/text_devicestatus_1"
-            android:layout_width="70dp"
-            android:layout_height="48dp"
-            android:layout_alignTop="@+id/text_devicename_1"
-            android:layout_alignBottom="@+id/text_devicename_1"
-            android:layout_toStartOf="@+id/text_devicename_1"
-            android:text="Status1"
-            android:gravity="center|center_horizontal|center_vertical"
-            android:layout_marginRight="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/text_devicename_1"
-            app:layout_constraintEnd_toStartOf="@+id/text_devicename_1"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="MissingConstraints" />
-
-        #2 Device info
-        <TextView
-            android:id="@+id/text_devicename_2"
-            android:layout_width="180dp"
-            android:layout_height="48dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:layout_below="@+id/text_devicename_1"
-            android:text="Name2"
-            android:gravity="center|center_horizontal|center_vertical"
-            app:layout_constraintBottom_toTopOf="@+id/text_devicename_3"
-            app:layout_constraintTop_toBottomOf="@+id/text_devicename_1"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="100dp" />
-
-        <TextView
-            android:id="@+id/text_deviceactivity_2"
-            android:layout_width="100dp"
-            android:layout_height="48dp"
-            android:layout_alignTop="@+id/text_devicename_2"
-            android:layout_alignBottom="@+id/text_devicename_2"
-            android:layout_toEndOf="@+id/text_devicename_2"
-            android:gravity="center|center_horizontal|center_vertical"
-            android:layout_marginLeft="10dp"
-            android:text="Last activity2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="parent"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
-            android:id="@+id/text_devicestatus_2"
-            android:layout_width="70dp"
-            android:layout_height="48dp"
-            android:layout_alignTop="@+id/text_devicename_2"
-            android:layout_alignBottom="@+id/text_devicename_2"
-            android:layout_toStartOf="@+id/text_devicename_2"
-            android:text="Status2"
-            android:gravity="center|center_horizontal|center_vertical"
-            android:layout_marginRight="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/text_devicename_2"
-            app:layout_constraintEnd_toStartOf="@+id/text_devicename_2"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="MissingConstraints" />
-
-        #3 Device info
-        <TextView
-            android:id="@+id/text_devicename_3"
-            android:layout_width="180dp"
-            android:layout_height="48dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:layout_below="@+id/text_devicename_2"
-            android:text="Name3"
-            android:gravity="center|center_horizontal|center_vertical"
-            app:layout_constraintBottom_toTopOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_devicename_2"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="100dp"
-            tools:visibility="visible" />
-
-        <TextView
-            android:id="@+id/text_deviceactivity_3"
-            android:layout_width="100dp"
-            android:layout_height="48dp"
-            android:layout_alignTop="@+id/text_devicename_3"
-            android:layout_alignBottom="@+id/text_devicename_3"
-            android:layout_toEndOf="@+id/text_devicename_3"
-            android:gravity="center|center_horizontal|center_vertical"
-            android:layout_marginLeft="10dp"
-            android:text="Last activity3"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="parent"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
-            android:id="@+id/text_devicestatus_3"
-            android:layout_width="70dp"
-            android:layout_height="48dp"
-            android:layout_alignTop="@+id/text_devicename_3"
-            android:layout_alignBottom="@+id/text_devicename_3"
-            android:layout_toStartOf="@+id/text_devicename_3"
-            android:text="Status3"
-            android:gravity="center|center_horizontal|center_vertical"
-            android:layout_marginRight="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/text_devicename_3"
-            app:layout_constraintEnd_toStartOf="@+id/text_devicename_3"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="MissingConstraints" />
--->
     </RelativeLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

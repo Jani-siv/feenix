@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId) {
                 R.id.home -> replaceFragment(Home())
                 R.id.connections -> replaceFragment(Connections())
-                R.id.settings -> replaceFragment(Settings())
             else -> {}
             }
             true
