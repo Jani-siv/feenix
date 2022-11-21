@@ -35,5 +35,4 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.DeviceViewHolder>()
             deviceId.text = std.deviceId
         }
     }
-
 }
