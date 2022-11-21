@@ -158,6 +158,7 @@ set(SOURCEFILES
         ${CMAKE_SOURCE_DIR}/debugger/devices/Dumpper.cpp
         ${CMAKE_SOURCE_DIR}/debugger/devices/cpu/Ticks.cpp
         ${CMAKE_SOURCE_DIR}/debugger/ElfLoader.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/cpu/assembler/Assembler.cpp
         )
 enable_testing()
 

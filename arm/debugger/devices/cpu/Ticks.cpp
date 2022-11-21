@@ -53,6 +53,7 @@ uint64_t Ticks::runClock()
         uint64_t tic = std::stoul(line);
         return tic;
     }
+    return 0;
 }
 
 std::string Ticks::readLine()
