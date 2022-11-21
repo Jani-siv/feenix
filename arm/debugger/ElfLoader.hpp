@@ -21,6 +21,7 @@ private:
     static size_t findFirstChar(std::string& str);
     static size_t findFirstNum(std::string& str);
     void ParseMemoryLines(std::vector<std::string> memoryLines);
+    void ParseDissAss();
     void ParseSections();
     void ParseDefinitions();
     std::string configFile_;

@@ -10,6 +10,7 @@ ElfLoader::ElfLoader(std::string configFile)
     configFile_ = std::move(configFile);
     ReadConfigFile();
     ParseMemory();
+    ParseDissAss();
 }
 
 void ElfLoader::ReadConfigFile()
@@ -123,6 +124,37 @@ void ElfLoader::ParseMemoryLines(std::vector<std::string> memoryLines)
         }
         message.SaveLayout(layout);
         memory_.push_back(message);
+    }
+}
+void ElfLoader::ParseDissAss()
+{
+    //todo combine file opening in own function
+    auto pointer = config_.find("DissAss");
+    if (pointer!= config_.end()) {
+        std::ifstream fd(pointer->second.c_str(), std::ios_base::in);
+        std::string originline;
+        devices::memory::DissAss dissAss;
+        while(!fd.eof())
+        {
+            std::getline(fd, originline);
+            if (findFirstNum(originline) > 1 && findFirstNum(originline) < originline.length() && findFirstChar(originline) > 1)
+            {
+                if (findFirstChar(originline) < findFirstNum(originline))
+                {
+                    originline = originline.substr(findFirstChar(originline), originline.find(" \t") - findFirstChar(originline));
+                }
+                else {
+                    originline = originline.substr(findFirstNum(originline), originline.find(" \t") - findFirstNum(originline));
+                }
+                std::string first = originline.substr(0, originline.find(':'));
+                std::string second = originline.substr(originline.find(":\t") + 2, originline.length() - originline.find(":\t"));
+                std::pair<devices::memory::addr ,devices::memory::payload > test;
+                test = std::make_pair(std::stoul(first, nullptr, 16),std::stoul(second,nullptr, 16));
+                dissAss.dissAssData.push_back(test);
+            }
+        }
+        auto it = memory_.begin();
+        it->SavePayload(dissAss);
     }
 }
 

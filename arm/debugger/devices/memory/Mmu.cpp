@@ -7,19 +7,35 @@ namespace memory {
 
 constexpr uint32_t u32inBytes = 4;
 
-void Mmu::CreateMemory(const std::vector<MemMsg>& memoryLayout)
+void Mmu::CreateMemory(const std::vector<MemMsg>& message)
 {
-    for (auto i: memoryLayout) {
+    for (auto i: message) {
         for (auto j : i.GetMemLayout()) {
             memLayout_.push_back(j);
         }
+        for (auto k : i.GetPayloadForMemory()) {
+            if (!k.dissAssData.empty())
+            {
+                for (auto l : k.dissAssData)
+                {
+                    dissAss_.push_back(l);
+                }
+            }
+        }
     }
+    //todo new private functions for these below
+    //create memory
     for (const auto& i: memLayout_) {
         Memory mem;
         uint32_t bytes = (i.dataLength - (i.dataLength % u32inBytes)) / u32inBytes;
         mem.allocateMemory(bytes, i.permission);
         memory_[i.name] = mem;
         memoryVmaStartPoint_[i.name] = i.startingAddress;
+    }
+    //write data to memory
+    for (auto i : dissAss_)
+    {
+        this->memory_["rom"].WriteMemory32(i.first,i.second);
     }
 }
 
@@ -38,45 +54,16 @@ void Mmu::WriteData32(uint32_t address, uint32_t data)
     memory_[memName].WriteMemory32(ConvertLmaToVectorPosition(transformedAddress), data);
 }
 
-void Mmu::WriteData16(uint32_t address, uint16_t data)
-{
-    MemoryName memName = getMemoryName(address);
-    SectionName secName = getSectionName(address);
-    uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
-    memory_[memName].WriteMemory16(ConvertLmaToVectorPosition(transformedAddress), data);
-}
-
-void Mmu::WriteData8(uint32_t address, uint8_t data)
-{
-    MemoryName memName = getMemoryName(address);
-    SectionName secName = getSectionName(address);
-    uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
-    memory_[memName].WriteMemory8(ConvertLmaToVectorPosition(transformedAddress), data);
-}
-
 uint32_t Mmu::ReadData32(uint32_t address)
 {
+    //todo no need for memory location modification
     MemoryName memName = getMemoryName(address);
     SectionName secName = getSectionName(address);
     uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
-    return memory_[memName].ReadMemory32(ConvertLmaToVectorPosition(transformedAddress));
+  //  return memory_[memName].ReadMemory32(ConvertLmaToVectorPosition(transformedAddress));
+  return memory_[memName].ReadMemory32(address);
 }
 
-uint16_t Mmu::ReadData16(uint32_t address)
-{
-    MemoryName memName = getMemoryName(address);
-    SectionName secName = getSectionName(address);
-    uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
-    return memory_[memName].ReadMemory16(ConvertLmaToVectorPosition(transformedAddress));
-}
-
-uint8_t Mmu::ReadData8(uint32_t address)
-{
-    MemoryName memName = getMemoryName(address);
-    SectionName secName = getSectionName(address);
-    uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
-    return memory_[memName].ReadMemory8(ConvertLmaToVectorPosition(transformedAddress));
-}
 
 std::string Mmu::getMemoryName(uint32_t address)
 {
@@ -113,6 +100,26 @@ uint32_t Mmu::ConvertLmaToVectorPosition(uint32_t address)
         return (address / 4);
     }
     return 0;
+}
+
+void Mmu::DumpMemoryInFile(std::string filename, uint32_t startAddress, uint32_t endAddress)
+{
+    dump.SetDumpFilename(std::move(filename));
+    std::string memoryName = getMemoryName(startAddress);
+    std::vector<uint32_t> data;
+    auto memSize = memory_[memoryName].GetMemorySize();
+    if ((endAddress/4) > memSize)
+    {
+        endAddress = memSize;
+    }
+    for (auto i = 0x0; i < endAddress; i++) {
+        if ((i % 4 == 0) || (i == 0x0)) {
+            data.push_back(memory_[memoryName].ReadMemory32(i));
+
+        }
+    }
+    //memory_[memoryName].PrintMemory();
+    dump.DumpMemoryDataToFile(data);
 }
 
 } // namespace memory

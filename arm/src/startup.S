@@ -12,7 +12,7 @@ _Reset:
 .section .text
 Reset_Handler:
     ldr r2, str1
-    b .
+    bl main
     str1: .word 0xDEADBEEF
 
 Undefined_Instruction:

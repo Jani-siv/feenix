@@ -66,7 +66,8 @@ set(SOURCEFILES
         ${CMAKE_SOURCE_DIR}/debugger/devices/memory/MemMsg.cpp
         ${CMAKE_SOURCE_DIR}/debugger/ElfLoader.cpp
         ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Memory.cpp
-        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Sections.cpp)
+        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Sections.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/Dumpper.cpp)
 
 enable_testing()
 
@@ -128,6 +129,55 @@ set(SOURCEFILES
         ${CMAKE_SOURCE_DIR}/debugger/devices/unit_tests/ElfLoaderTests.cpp
         ${CMAKE_SOURCE_DIR}/debugger/ElfLoader.cpp
         ${CMAKE_SOURCE_DIR}/debugger/devices/memory/MemMsg.cpp)
+
+enable_testing()
+
+add_executable(
+        ${TESTNAME}
+        ${SOURCEFILES}
+)
+target_link_libraries(${TESTNAME} gtest gmock gtest_main)
+add_test(${TESTNAME} ${TESTNAME}Tests)
+
+#cpuTests
+set(TESTNAME CpuTests)
+
+project(${TESTNAME})
+
+set(BASEPATH "${CMAKE_SOURCE_DIR}")
+enable_testing()
+set(SOURCEFILES
+        ${CMAKE_SOURCE_DIR}/debugger/devices/unit_tests/CoreTests.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/cpu/Core.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/registers/Registers.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Mmu.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/MemMsg.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/ElfLoader.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Memory.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Sections.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/Dumpper.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/cpu/Ticks.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/ElfLoader.cpp
+        )
+enable_testing()
+
+add_executable(
+        ${TESTNAME}
+        ${SOURCEFILES}
+)
+target_link_libraries(${TESTNAME} gtest gmock gtest_main)
+add_test(${TESTNAME} ${TESTNAME}Tests)
+
+#ticksTests
+set(TESTNAME TicksTests)
+
+project(${TESTNAME})
+
+set(BASEPATH "${CMAKE_SOURCE_DIR}")
+enable_testing()
+set(SOURCEFILES
+        ${CMAKE_SOURCE_DIR}/debugger/devices/unit_tests/TicksTests.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/cpu/Ticks.cpp)
 
 enable_testing()
 

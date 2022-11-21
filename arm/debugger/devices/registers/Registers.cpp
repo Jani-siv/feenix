@@ -10,17 +10,16 @@ Registers::Registers()
     InitRegisters();
 }
 
-uint32_t Registers::readRegister(std::string registerAddress)
+uint32_t Registers::readRegister(uint8_t registerAddress)
 {
     auto pointer = RegisterMap_.find(registerAddress);
     if (pointer != RegisterMap_.end()) {
-        uint32_t val = *pointer->second;
-        return val;
+        return *pointer->second;
     }
     return 0xFFFFFFFF;
 }
 
-void Registers::writeRegister(std::string dest, uint32_t value)
+void Registers::writeRegister(uint8_t dest, uint32_t value)
 {
     auto pointer = RegisterMap_.find(dest);
     if (pointer != RegisterMap_.end()) {
@@ -30,23 +29,20 @@ void Registers::writeRegister(std::string dest, uint32_t value)
 
 void Registers::InitRegisters()
 {
-    for(auto i = 0; i < gpRegisterSize; i++)
+    for(unsigned int & gpRegister : gpRegisters_)
     {
-        gpRegisters_[i]=0x0;
+        gpRegister=0x0;
     }
-    for(auto i = 0; i < psRegisterSize; i++)
+    for(unsigned int & psRegister : psRegisters_)
     {
-        psRegisters_[i]=0x0;
+        psRegister=0x0;
     }
-    for (auto i=0; i < (gpRegisterSize-4); i++)
+    for (auto i=0; i < gpRegisterSize; i++)
     {
-        std::string reg="r"+std::to_string(i);
-        RegisterMap_[reg]=&gpRegisters_[i];
+        uint32_t* ptr;
+        ptr = &gpRegisters_[i];
+        RegisterMap_[i]=ptr;
     }
-    RegisterMap_["MSP"]=&gpRegisters_[13];
-    RegisterMap_["PSP"]=&gpRegisters_[14];
-    RegisterMap_["LR"]=&gpRegisters_[15];
-    RegisterMap_["PC"]=&gpRegisters_[16];
 }
 
 } // namespace registers

@@ -9,7 +9,15 @@ project (Debugger-arm-m3)
 set(SOURCE_FILES
         ${CMAKE_SOURCE_DIR}/debugger/main.cpp
         ${CMAKE_SOURCE_DIR}/debugger/Init.cpp
-        ${CMAKE_SOURCE_DIR}/debugger/ElfLoader.cpp)
+        ${CMAKE_SOURCE_DIR}/debugger/ElfLoader.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Mmu.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Memory.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/Sections.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/Dumpper.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/cpu/Core.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/registers/Registers.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/memory/MemMsg.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/cpu/Ticks.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 

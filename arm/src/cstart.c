@@ -1,7 +1,7 @@
 #include <stdint.h>
 
 extern uint8_t _sbss;
-exnern uint8_t _ebss;
+extern uint8_t _ebss;
 volatile uint8_t *data = &_sbss;
 volatile uint8_t *data_end = &_ebss;
 

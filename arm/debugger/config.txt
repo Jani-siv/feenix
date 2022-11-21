@@ -1,1 +1,2 @@
 LinkScript: /home/jani/feenix/arm/src/linkscript.ld
+DissAss: /home/jani/feenix/arm/src/boot1.list

@@ -1,3 +1,4 @@
+OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 ENTRY(_Reset)
 MEMORY
 {
@@ -13,6 +14,7 @@ SECTIONS
     . = 0x0;
     .text :
     {
+        . = ALIGN(4);
         KEEP(*(.vectors .vectors.*))
         *(.text*)
         *(.rodata*)
@@ -22,6 +24,7 @@ SECTIONS
     /* .bss section which is used for uninitialized data */
     .bss (NOLOAD) :
     {
+        . = ALIGN(4);
         _sbss = .;
         *(.bss*)
         *(COMMON)
@@ -30,6 +33,7 @@ SECTIONS
 
     .data :
     {
+        . = ALIGN(4);
         _sdata = .;
         *(.data*);
         _edata = .;
@@ -39,9 +43,9 @@ SECTIONS
     .stack (NOLOAD):
     {
         _sstack = .;
-        . = ALIGN(8);
+        . = ALIGN(4);
         . = . + STACK_SIZE;
-        . = ALIGN(8);
+        . = ALIGN(4);
         _estack = .;
     } > ram
 

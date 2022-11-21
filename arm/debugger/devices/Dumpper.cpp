@@ -6,29 +6,36 @@
 
 namespace devices {
 
-void Dumpper::DumpMemoryDataToFile(const std::vector<uint32_t>& data) const
+void Dumpper::DumpMemoryDataToFile(std::vector<uint32_t>& data) const
 {
     std::vector<uint16_t> data16{};
     for (auto &i : data)
     {
-        data16.push_back(i & 0x0000FFFF);
-        data16.push_back(i & 0xFFFF0000);
+        uint16_t low = (i & 0x0000FFFF);
+        i = i >> 16;
+        uint16_t high = i;
+        data16.push_back(high);
+        data16.push_back(low);
     }
     DumpMemoryDataToFile(data16);
 }
 
-void Dumpper::DumpMemoryDataToFile(const std::vector<uint16_t>& data) const
+void Dumpper::DumpMemoryDataToFile(std::vector<uint16_t>& data) const
 {
     std::vector<uint8_t> data8{};
     for (auto& i : data)
     {
-        data8.push_back(i & 0x00FF);
-        data8.push_back(i & 0xFF00);
+        uint8_t low = (i & 0x00FF);
+        i = i >> 8;
+        uint8_t high = i;
+        data8.push_back(high);
+        data8.push_back(low);
     }
+
     DumpMemoryDataToFile(data8);
 }
 
-void Dumpper::DumpMemoryDataToFile(const std::vector<uint8_t>& data) const
+void Dumpper::DumpMemoryDataToFile(std::vector<uint8_t>& data) const
 {
     std::stringstream ss;
     size_t counter = 0;
