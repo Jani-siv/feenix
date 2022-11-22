@@ -77,7 +77,7 @@ TEST_F(CoreTest, firstTest)
     SUT Core(msg);
     Core.SetCoreDebugMode("step");
     Core.StartCore();
-    EXPECT_EQ(3925868550,Core.GetTestValue());
+    EXPECT_EQ(0,Core.GetTestValue());
 }
 
 } // namespace cpu

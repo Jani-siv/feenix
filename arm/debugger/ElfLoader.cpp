@@ -126,6 +126,7 @@ void ElfLoader::ParseMemoryLines(std::vector<std::string> memoryLines)
         memory_.push_back(message);
     }
 }
+
 void ElfLoader::ParseDissAss()
 {
     //todo combine file opening in own function
@@ -139,23 +140,54 @@ void ElfLoader::ParseDissAss()
             std::getline(fd, originline);
             if (findFirstNum(originline) > 1 && findFirstNum(originline) < originline.length() && findFirstChar(originline) > 1)
             {
-                if (findFirstChar(originline) < findFirstNum(originline))
+
+                (findFirstChar(originline) < findFirstNum(originline))?
+                originline = FirstIsChar(originline):
+                    originline = FirstIsNum(originline);
+
+                std::string address = originline.substr(0, originline.find(':'));
+                std::string value = originline.substr(originline.find(":\t") + 2, originline.length() - originline.find(":\t"));
+                auto pos = value.find(" ");
+                constexpr size_t maxlen16bits = 6;
+                if (pos < maxlen16bits)
                 {
-                    originline = originline.substr(findFirstChar(originline), originline.find(" \t") - findFirstChar(originline));
+                (value.at(pos+1) != ' ' && pos+1 < value.length())?
+                AddTwoAddressAndValue(address,value,dissAss)
+                :AddOneAddressAndValue(address,value,dissAss);
                 }
-                else {
-                    originline = originline.substr(findFirstNum(originline), originline.find(" \t") - findFirstNum(originline));
-                }
-                std::string first = originline.substr(0, originline.find(':'));
-                std::string second = originline.substr(originline.find(":\t") + 2, originline.length() - originline.find(":\t"));
-                std::pair<devices::memory::addr ,devices::memory::payload > test;
-                test = std::make_pair(std::stoul(first, nullptr, 16),std::stoul(second,nullptr, 16));
-                dissAss.dissAssData.push_back(test);
             }
         }
         auto it = memory_.begin();
         it->SavePayload(dissAss);
     }
+}
+
+std::string ElfLoader::FirstIsChar(std::string originline)
+{
+    return originline.substr(findFirstChar(originline), originline.find(" \t") - findFirstChar(originline));
+}
+
+std::string ElfLoader::FirstIsNum(std::string originline)
+{
+    return originline.substr(findFirstNum(originline), originline.find(" \t") - findFirstNum(originline));
+}
+
+void ElfLoader::AddOneAddressAndValue(std::string address, std::string value,devices::memory::DissAss& dissAss)
+{
+    std::pair<devices::memory::addr ,devices::memory::payload > test;
+    value = value.substr(0, value.find(' '));
+    test = std::make_pair(std::stoul(address, nullptr, 16), std::stoul(value, nullptr, 16));
+    dissAss.dissAssData.push_back(test);
+}
+
+void ElfLoader::AddTwoAddressAndValue(std::string address, std::string value,devices::memory::DissAss& dissAss)
+{
+    std::string val1 = value.substr(0,value.find(' ')+1);
+    std::string val2 = value.substr(value.find(' ')+1,value.length());
+    AddOneAddressAndValue(address,val1,dissAss);
+    uint16_t addr = std::stoul(address, nullptr) + 0x2;
+    std::string address2 = std::to_string(addr);
+    AddOneAddressAndValue(address2,val2,dissAss);
 }
 
 } // namespace debugger

@@ -38,6 +38,7 @@ uint64_t Ticks::runClock()
             {
                 if (!std::isdigit(i))
                 {
+                    //todo bug in code it's hiding somewhere here... :)
                     std::cout << "line contains chars" << std::endl;
                     allOk = false;
                 }
@@ -52,6 +53,7 @@ uint64_t Ticks::runClock()
         uint64_t tic = std::stoul(line);
         return tic;
     }
+    return 0;
 }
 
 std::string Ticks::readLine()

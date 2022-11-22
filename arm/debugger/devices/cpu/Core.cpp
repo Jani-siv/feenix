@@ -8,7 +8,7 @@ constexpr auto PSP = 14;
 constexpr auto LR = 15;
 constexpr auto PC = 16;
 
-Core::Core(std::vector<devices::memory::MemMsg> msg)
+Core::Core(const std::vector<devices::memory::MemMsg>& msg)
 {
     registers_ = std::make_shared<registers::Registers>();
     mmu_ = std::make_shared<memory::Mmu>();
@@ -33,7 +33,8 @@ void Core::StartCore()
             uint32_t address = ReadPCRegister();
             uint32_t command = GetCommandFromMemory(address);
             printf("0x%x:0x%X\n",address,command);
-            registers_->writeRegister(PC,registers_->readRegister(PC)+0x4);
+            printf("%s\n",assembler_->ExecuteThumb(command).c_str());
+            registers_->writeRegister(PC,registers_->readRegister(PC)+0x2);
             //todo parse command and make it happend
             //todo add +1 to PC if assembly not override this
         }
@@ -49,7 +50,7 @@ uint32_t Core::ReadPCRegister()
 }
 uint32_t Core::GetCommandFromMemory(uint32_t address)
 {
-    return mmu_->ReadData32(address);
+    return mmu_->ReadData16(address);
 }
 void Core::dumpMemoryInFile(std::string filename, uint32_t startAddress, uint32_t len)
 {

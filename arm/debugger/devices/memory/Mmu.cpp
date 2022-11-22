@@ -35,7 +35,7 @@ void Mmu::CreateMemory(const std::vector<MemMsg>& message)
     //write data to memory
     for (auto i : dissAss_)
     {
-        this->memory_["rom"].WriteMemory32(i.first,i.second);
+        this->memory_["rom"].WriteMemory16(i.first,i.second);
     }
 }
 
@@ -64,6 +64,15 @@ uint32_t Mmu::ReadData32(uint32_t address)
   return memory_[memName].ReadMemory32(address);
 }
 
+uint16_t Mmu::ReadData16(uint16_t address)
+{
+    //todo no need for memory location modification
+    MemoryName memName = getMemoryName(address);
+    SectionName secName = getSectionName(address);
+    //uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
+    //  return memory_[memName].ReadMemory32(ConvertLmaToVectorPosition(transformedAddress));
+    return this->memory_[memName].ReadMemory16(address);
+}
 
 std::string Mmu::getMemoryName(uint32_t address)
 {

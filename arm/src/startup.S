@@ -11,9 +11,7 @@ _Reset:
     b FIQ
 .section .text
 Reset_Handler:
-    ldr r2, str1
     bl main
-    str1: .word 0xDEADBEEF
 
 Undefined_Instruction:
     nop

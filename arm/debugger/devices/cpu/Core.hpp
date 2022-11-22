@@ -3,13 +3,14 @@
 #include "../registers/Registers.hpp"
 #include "../memory/Mmu.hpp"
 #include "Ticks.hpp"
+#include "assembler/Assembler.hpp"
 
 namespace devices {
 namespace cpu {
 
 class Core {
 public:
-    Core(std::vector<devices::memory::MemMsg> msg);
+    Core(const std::vector<devices::memory::MemMsg>& msg);
     ~Core() = default;
     virtual void SetCoreDebugMode(const std::string& mode);
     virtual void StartCore();
@@ -20,6 +21,7 @@ protected:
     std::shared_ptr<registers::Registers> registers_;
     std::shared_ptr<memory::Mmu> mmu_;
     std::shared_ptr<Ticks> clock_;
+    std::shared_ptr<assembler::Assembler> assembler_;
 };
 
 } // namespace cpu
