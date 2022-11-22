@@ -4,11 +4,12 @@
 #include "../memory/Mmu.hpp"
 #include "Ticks.hpp"
 #include "assembler/Assembler.hpp"
+#include "assembler/Execute.hpp"
 
 namespace devices {
 namespace cpu {
 
-class Core {
+class Core : public assembler::Execute{
 public:
     Core(const std::vector<devices::memory::MemMsg>& msg);
     ~Core() = default;

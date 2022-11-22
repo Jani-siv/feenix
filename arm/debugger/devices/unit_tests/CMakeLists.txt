@@ -209,3 +209,24 @@ add_executable(
 )
 target_link_libraries(${TESTNAME} gtest gmock gtest_main)
 add_test(${TESTNAME} ${TESTNAME}Tests)
+
+#executeTests
+set(TESTNAME ExecuteTests)
+
+project(${TESTNAME})
+
+set(BASEPATH "${CMAKE_SOURCE_DIR}")
+enable_testing()
+set(SOURCEFILES
+        ${CMAKE_SOURCE_DIR}/debugger/devices/unit_tests/ExecuteTests.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/registers/Registers.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/cpu/assembler/Execute.cpp)
+
+enable_testing()
+
+add_executable(
+        ${TESTNAME}
+        ${SOURCEFILES}
+)
+target_link_libraries(${TESTNAME} gtest gmock gtest_main)
+add_test(${TESTNAME} ${TESTNAME}Tests)

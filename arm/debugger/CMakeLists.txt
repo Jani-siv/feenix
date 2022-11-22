@@ -19,6 +19,7 @@ set(SOURCE_FILES
         ${CMAKE_SOURCE_DIR}/debugger/devices/memory/MemMsg.cpp
         ${CMAKE_SOURCE_DIR}/debugger/devices/cpu/Ticks.cpp
         ${CMAKE_SOURCE_DIR}/debugger/devices/cpu/assembler/Assembler.cpp
+        ${CMAKE_SOURCE_DIR}/debugger/devices/cpu/assembler/Execute.cpp
         )
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})

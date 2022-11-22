@@ -1,6 +1,8 @@
 .section .vectors, "x"
+.equ STACKINIT,   0x2000
 .global _Reset
 _Reset:
+    .short STACKINIT
     b Reset_Handler
     b Undefined_Instruction
     b Software_Interrupt
@@ -10,9 +12,9 @@ _Reset:
     b IRQ
     b FIQ
 .section .text
+
 Reset_Handler:
     bl main
-
 Undefined_Instruction:
     nop
 Software_Interrupt:

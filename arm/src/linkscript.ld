@@ -11,7 +11,7 @@ STACK_SIZE = 0x2000;
 /* Section Definitions */
 SECTIONS
 {
-    . = 0x0;
+    . = 0x1000;
     .text :
     {
         . = ALIGN(4);

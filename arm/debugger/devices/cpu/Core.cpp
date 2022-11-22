@@ -14,8 +14,6 @@ Core::Core(const std::vector<devices::memory::MemMsg>& msg)
     mmu_ = std::make_shared<memory::Mmu>();
     mmu_->CreateMemory(msg);
     dumpMemoryInFile("dump.txt", 0x0, 0x100);
-    //Set program counter to 0;
-    registers_->writeRegister(PC,0x0);
 }
 
 void Core::SetCoreDebugMode(const std::string& mode)
@@ -31,10 +29,13 @@ void Core::StartCore()
         for (auto i = 0; i<tic; i++)
         {
             uint32_t address = ReadPCRegister();
-            uint32_t command = GetCommandFromMemory(address);
+            uint16_t command = GetCommandFromMemory(address);
             printf("0x%x:0x%X\n",address,command);
-            printf("%s\n",assembler_->ExecuteThumb(command).c_str());
-            registers_->writeRegister(PC,registers_->readRegister(PC)+0x2);
+            printf("%s\n", assembler_->GetThumbCode(command).c_str());
+            assembler::Execute::executeCommand(assembler_->GetThumbCode(command),
+                                               command,registers_);
+            //todo add align in execute class
+            //registers_->writeRegister(PC,registers_->readRegister(PC)+0x2);
             //todo parse command and make it happend
             //todo add +1 to PC if assembly not override this
         }
