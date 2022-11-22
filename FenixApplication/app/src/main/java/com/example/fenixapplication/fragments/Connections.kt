@@ -1,5 +1,6 @@
 package com.example.fenixapplication.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -38,6 +39,10 @@ class Connections : Fragment(R.layout.fragment_connections) {
         sqliteHelper = SQLiteHelper(context)
         btnAddConnection.setOnClickListener { addConnectionToDatabase() }
         btnRefresh.setOnClickListener { getDevicesFromDatabase() }
+
+        adapter?.setOnClickDeleteItem {
+            deleteDevice(it.id)
+        }
     }
 
     private fun addConnectionToDatabase() {
@@ -59,8 +64,26 @@ class Connections : Fragment(R.layout.fragment_connections) {
 
     private fun getDevicesFromDatabase() {
         val stdList = sqliteHelper.getAllDevices()
-        Log.e("ppp", "${stdList.size}")
         adapter?.addItems(stdList)
+    }
+
+    private fun deleteDevice(id: Int) {
+        if (id == null) return
+
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage("Delete this connection?")
+        builder.setCancelable(true)
+        builder.setPositiveButton("Yes") { dialog, _ ->
+            sqliteHelper.deleteDevice(id)
+            getDevicesFromDatabase()
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("No") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val alert = builder.create()
+        alert.show()
     }
 
     private fun recyclerInitialize() {

@@ -3,6 +3,7 @@ package com.example.fenixapplication
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fenixapplication.db.DeviceModel
@@ -10,10 +11,15 @@ import com.example.fenixapplication.db.DeviceModel
 class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.DeviceViewHolder>() {
 
     private var stdList: ArrayList<DeviceModel> = ArrayList()
+    private var onClickDeleteItem: ((DeviceModel) -> Unit)? = null
 
     fun addItems( items : ArrayList<DeviceModel>) {
         this.stdList = items
         notifyDataSetChanged()
+    }
+
+    fun setOnClickDeleteItem(callback:(DeviceModel)->Unit) {
+        this.onClickDeleteItem = callback
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = DeviceViewHolder(
@@ -23,6 +29,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.DeviceViewHolder>()
     override fun onBindViewHolder(holder: DeviceViewHolder, position: Int) {
         val std = stdList[position]
         holder.bindView(std)
+        holder.deleteBtn.setOnClickListener { onClickDeleteItem?.invoke(std) }
     }
 
     override fun getItemCount(): Int {
@@ -31,6 +38,8 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.DeviceViewHolder>()
 
     class DeviceViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
         private var deviceId = view.findViewById<TextView>(R.id.device_name)
+        var viewBtn = view.findViewById<Button>(R.id.btnViewStatuses)
+        var deleteBtn = view.findViewById<Button>(R.id.btnDeleteDevice)
         fun bindView(std: DeviceModel) {
             deviceId.text = std.deviceId
         }
