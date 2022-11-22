@@ -26,8 +26,6 @@ private:
     std::string FirstIsNum(std::string originline);
     void AddOneAddressAndValue(std::string address, std::string value,devices::memory::DissAss& dissAss);
     void AddTwoAddressAndValue(std::string address, std::string value,devices::memory::DissAss& dissAss);
-        void ParseSections();
-    void ParseDefinitions();
     std::string configFile_;
     std::map<configAttribute ,configPath> config_;
     std::vector<devices::memory::MemMsg> memory_;
