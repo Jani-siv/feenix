@@ -16,9 +16,9 @@ public:
     void executeCommand(std::string command, uint32_t data,
                         std::shared_ptr<registers::Registers>& registers);
 private:
-    void b_t2(uint16_t data,
+    static void b_t2(uint16_t data,
               std::shared_ptr<registers::Registers>& registers);
-    void bl(const std::string& command, uint16_t data,
+    void bl(const std::string& command, uint32_t data,
             std::shared_ptr<registers::Registers>& registers);
     bool IsDoubleInstruction() const;
     bool doubleInstruction = false;
