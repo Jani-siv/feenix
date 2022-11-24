@@ -45,7 +45,7 @@ void Registers::InitRegisters()
     }
     writeRegister(MSP,0x0);
     writeRegister(LR,0xFFFFFFFF);
-    writeRegister(PC,0x4);
+    writeRegister(PC,0x2);
 }
 
 } // namespace registers
