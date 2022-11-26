@@ -64,15 +64,6 @@ TEST_F(ExecuteTest, BLPlus)
     EXPECT_EQ(0x28,reg->readRegister(PC));
 }
 
-TEST_F(ExecuteTest, BLPlusVer2)
-{
-    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
-    reg->writeRegister(PC,0x2C);
-    SUT.executeCommand("BL", 0xf000,reg,mem);
-    SUT.executeCommand("nope", 0xf809,reg,mem);
-    EXPECT_EQ(0x28,reg->readRegister(PC));
-}
-
 TEST_F(ExecuteTest, BLMinus)
 {
     std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
