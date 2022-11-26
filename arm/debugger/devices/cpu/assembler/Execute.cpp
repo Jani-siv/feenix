@@ -14,19 +14,19 @@ void Execute::executeCommand(std::string command, uint32_t data,
         {
             command = lastCommand_;
         }
+        else
+        {
+            registers->writeRegister(PC,registers->readRegister(PC)+align);
+        }
     }
     if(command=="B_T2") { b_t2(data, registers);}
     if(command=="BL") { bl(command, data, registers);}
     if(command=="PUSH_T1") {push(data, registers, mmu);}
+    if(command=="ADD_T1_SP_IMM") {add_t1_sp_imm(data,registers);}
 }
 void Execute::b_t2(uint16_t data, std::shared_ptr<registers::Registers> &registers)
 {
-    data = (data&0x7FF);
-    data = data + registers->readRegister(PC);
-    data = data << 1;
-    data += align;
-    printf("DEBUG:0x%X\n",data);
-    registers->writeRegister(PC,data);
+    registers->writeRegister(PC,(data&0x07FF)*align+registers->readRegister(PC)+0x4);
 }
 void Execute::bl(const std::string& command, uint32_t data, std::shared_ptr<registers::Registers> &registers)
 {
@@ -36,7 +36,7 @@ void Execute::bl(const std::string& command, uint32_t data, std::shared_ptr<regi
         doubleInstruction = true;
         firstPartOfInstruction = data;
         firstPartOfInstruction <<= 16;
-        registers->writeRegister(PC,registers->readRegister(PC)+0x2);
+        registers->writeRegister(PC,registers->readRegister(PC)+align);
     }
     else
     {
@@ -82,8 +82,6 @@ bool Execute::IsDoubleInstruction() const
 void Execute::push(uint16_t data, std::shared_ptr<registers::Registers> &registers, std::shared_ptr<memory::Mmu>& mmu)
 {
     //Only for r0-r7 + lr
-    uint16_t sp = 0x0;
-    //lr = 9 bitti
     uint16_t lowReg = (data&0x01FF);
     for (auto i = 0x0; i < 8; i++)
     {
@@ -91,7 +89,7 @@ void Execute::push(uint16_t data, std::shared_ptr<registers::Registers> &registe
         {
             //0-7 Reg
             mmu->WriteData32(registers->readRegister(MSP),registers->readRegister(i));
-            registers->writeRegister(MSP,(registers->readRegister(MSP)-0x2));
+            registers->writeRegister(MSP,(registers->readRegister(MSP)-align));
         }
         lowReg >>= 1;
     }
@@ -99,8 +97,18 @@ void Execute::push(uint16_t data, std::shared_ptr<registers::Registers> &registe
     {
         //LR
         mmu->WriteData32(registers->readRegister(MSP),registers->readRegister(LR));
-        registers->writeRegister(MSP,(registers->readRegister(MSP)-0x2));
+        registers->writeRegister(MSP,(registers->readRegister(MSP)-align));
     }
+    registers->writeRegister(PC,(registers->readRegister(PC)+align));
+}
+void Execute::add_t1_sp_imm(uint16_t data, std::shared_ptr<registers::Registers> &registers)
+{
+    uint8_t imm8 = (data&0x00FF);
+    data >>= 8;
+    uint8_t reg = (data&0x0007);
+    uint32_t total = registers->readRegister(MSP) + imm8;
+    registers->writeRegister(reg,total);
+    registers->writeRegister(PC,(registers->readRegister(PC)+align));
 }
 
 } //namespace assembler

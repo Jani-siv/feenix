@@ -47,14 +47,27 @@ public:
 TEST_F(ExecuteTest, firstTest)
 {
     std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    reg->writeRegister(PC,0x2);
     SUT.executeCommand("B_T2", 0xE006, reg,mem);
     EXPECT_EQ(0x12,reg->readRegister(PC));
+    reg->writeRegister(PC,0x2c);
+    SUT.executeCommand("B_T2", 0xE007, reg,mem);
+    EXPECT_EQ(0x3e,reg->readRegister(PC));
 }
 
 TEST_F(ExecuteTest, BLPlus)
 {
     std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
     reg->writeRegister(PC,0x12);
+    SUT.executeCommand("BL", 0xf000,reg,mem);
+    SUT.executeCommand("nope", 0xf809,reg,mem);
+    EXPECT_EQ(0x28,reg->readRegister(PC));
+}
+
+TEST_F(ExecuteTest, BLPlusVer2)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    reg->writeRegister(PC,0x2C);
     SUT.executeCommand("BL", 0xf000,reg,mem);
     SUT.executeCommand("nope", 0xf809,reg,mem);
     EXPECT_EQ(0x28,reg->readRegister(PC));
@@ -93,15 +106,21 @@ TEST_F(ExecuteTest, Push_t1_07regNoLR)
     reg->writeRegister(LR,0x24);
     reg->writeRegister(MSP,0x20);
     SUT.executeCommand("PUSH_T1", 0xb4FF,reg,mem);
-    //8 commands 0x20 - 0x8
     EXPECT_EQ(0x10,reg->readRegister(MSP));
-    //override command ReadData32 First is R7 and then LR
     for (auto i=0x0; i < 0x8; i++)
     {
         EXPECT_EQ(i,mem->ReadData32(0x0));
     }
 }
-
+//af00 ADD_T1_SP_IMM
+TEST_F(ExecuteTest, Add_t1_sp_imm_zerovalue_to_r7)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    reg->writeRegister(MSP,0x20);
+    reg->writeRegister(7,0x00);
+    SUT.executeCommand("ADD_T1_SP_IMM", 0xaf00,reg,mem);
+    EXPECT_EQ(0x20,reg->readRegister(7));
+}
 
 } //namespace tests
 } //namespace assembler

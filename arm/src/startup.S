@@ -14,8 +14,6 @@ _Reset:
 .section .text
 
 Reset_Handler:
-    PUSH {r1,r2,r3,r4,r5,r6,r7}
-    PUSH {r8,r9,r10,r11,r12,lr}
     bl main
 Undefined_Instruction:
     nop

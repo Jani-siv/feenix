@@ -29,6 +29,7 @@ private:
     void bl(const std::string& command, uint32_t data,
             std::shared_ptr<registers::Registers>& registers);
     void push(uint16_t data, std::shared_ptr<registers::Registers> &registers, std::shared_ptr<memory::Mmu>& mmu);
+    void add_t1_sp_imm(uint16_t data, std::shared_ptr<registers::Registers> &registers);
 };
 
 } //namespace assembler
