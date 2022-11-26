@@ -22,8 +22,8 @@ public:
     void CreateMemory(const std::vector<MemMsg>& message);
     void CreateSections(const std::string& name, uint32_t vma, uint32_t lma);
     virtual void DumpMemoryInFile(std::string filename, uint32_t startAddress, uint32_t endAddress);
-    uint32_t ReadData32(uint32_t address);
-    void WriteData32(uint32_t address, uint32_t data);
+    virtual uint32_t ReadData32(uint32_t address);
+    virtual void WriteData32(uint32_t address, uint32_t data);
     std::string getMemoryName(uint32_t address);
     uint16_t ReadData16(uint16_t address);
 private:

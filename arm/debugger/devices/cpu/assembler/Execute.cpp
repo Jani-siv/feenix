@@ -7,7 +7,7 @@ namespace assembler {
 constexpr uint8_t align = 0x2;
 
 void Execute::executeCommand(std::string command, uint32_t data,
-                             std::shared_ptr<registers::Registers> &registers)
+                             std::shared_ptr<registers::Registers> &registers, std::shared_ptr<memory::Mmu>& mmu)
 {
     if (command == "nope") {
         if(IsDoubleInstruction())
@@ -17,6 +17,7 @@ void Execute::executeCommand(std::string command, uint32_t data,
     }
     if(command=="B_T2") { b_t2(data, registers);}
     if(command=="BL") { bl(command, data, registers);}
+    if(command=="PUSH_T1") {push(data, registers, mmu);}
 }
 void Execute::b_t2(uint16_t data, std::shared_ptr<registers::Registers> &registers)
 {
@@ -77,6 +78,29 @@ void Execute::bl(const std::string& command, uint32_t data, std::shared_ptr<regi
 bool Execute::IsDoubleInstruction() const
 {
     return doubleInstruction;
+}
+void Execute::push(uint16_t data, std::shared_ptr<registers::Registers> &registers, std::shared_ptr<memory::Mmu>& mmu)
+{
+    //Only for r0-r7 + lr
+    uint16_t sp = 0x0;
+    //lr = 9 bitti
+    uint16_t lowReg = (data&0x01FF);
+    for (auto i = 0x0; i < 8; i++)
+    {
+        if ((lowReg&0x0001) == 0x1)
+        {
+            //0-7 Reg
+            mmu->WriteData32(registers->readRegister(MSP),registers->readRegister(i));
+            registers->writeRegister(MSP,(registers->readRegister(MSP)-0x2));
+        }
+        lowReg >>= 1;
+    }
+    if (lowReg > 0)
+    {
+        //LR
+        mmu->WriteData32(registers->readRegister(MSP),registers->readRegister(LR));
+        registers->writeRegister(MSP,(registers->readRegister(MSP)-0x2));
+    }
 }
 
 } //namespace assembler

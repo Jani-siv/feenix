@@ -14,6 +14,8 @@ Core::Core(const std::vector<devices::memory::MemMsg>& msg)
     mmu_ = std::make_shared<memory::Mmu>();
     mmu_->CreateMemory(msg);
     dumpMemoryInFile("dump.txt", 0x0, 0x100);
+    //set MSP address
+    registers_->writeRegister(MSP,mmu_->ReadData32(0x0));
 }
 
 void Core::SetCoreDebugMode(const std::string& mode)
@@ -33,7 +35,7 @@ void Core::StartCore()
             printf("0x%x:0x%X\n",address,command);
             printf("%s\n", assembler_->GetThumbCode(command).c_str());
             assembler::Execute::executeCommand(assembler_->GetThumbCode(command),
-                                               command,registers_);
+                                               command,registers_,mmu_);
             //todo add align in execute class
             //registers_->writeRegister(PC,registers_->readRegister(PC)+0x2);
             //todo parse command and make it happend
