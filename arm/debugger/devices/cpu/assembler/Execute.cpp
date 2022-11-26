@@ -23,6 +23,7 @@ void Execute::executeCommand(std::string command, uint32_t data,
     if(command=="BL") { bl(command, data, registers);}
     if(command=="PUSH_T1") {push(data, registers, mmu);}
     if(command=="ADD_T1_SP_IMM") {add_t1_sp_imm(data,registers);}
+    if(command=="MOV_T2_REG") {mov_t2_reg(data,registers,mmu);}
 }
 void Execute::b_t2(uint16_t data, std::shared_ptr<registers::Registers> &registers)
 {
@@ -109,6 +110,11 @@ void Execute::add_t1_sp_imm(uint16_t data, std::shared_ptr<registers::Registers>
     uint32_t total = registers->readRegister(MSP) + imm8;
     registers->writeRegister(reg,total);
     registers->writeRegister(PC,(registers->readRegister(PC)+align));
+}
+void Execute::mov_t2_reg(uint32_t data, std::shared_ptr<registers::Registers> &registers,
+                         std::shared_ptr<memory::Mmu> &mmu)
+{
+
 }
 
 } //namespace assembler

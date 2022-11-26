@@ -15,7 +15,8 @@ Core::Core(const std::vector<devices::memory::MemMsg>& msg)
     mmu_->CreateMemory(msg);
     dumpMemoryInFile("dump.txt", 0x0, 0x100);
     //set MSP address
-    registers_->writeRegister(MSP,mmu_->ReadData32(0x0));
+    registers_->writeRegister(MSP,mmu_->ReadData16(0x0));
+    printf("STACK:0x%x\n",registers_->readRegister(MSP));
 }
 
 void Core::SetCoreDebugMode(const std::string& mode)
