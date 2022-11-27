@@ -52,9 +52,11 @@ class SQLiteHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME,
 
     fun insertDevice(std: DeviceModel): Long {
         val db = this.writableDatabase
+
         val contentValues = ContentValues()
         contentValues.put(ID, std.id)
         contentValues.put(DEVICE_ID, std.deviceId)
+
         val success = db.insert(TBL_DEVICE, null, contentValues)
         db.close()
         return success
@@ -62,6 +64,7 @@ class SQLiteHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME,
 
     fun insertStatus(std: StatusModel): Long {
         val db = this.writableDatabase
+
         val contentValues = ContentValues()
         contentValues.put(STATUS_ID, std.status_id)
         contentValues.put(STATUS_TO_DEVICE, std.status_to_device)
@@ -69,6 +72,7 @@ class SQLiteHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME,
         contentValues.put(STATUS_MIN, std.status_min)
         contentValues.put(STATUS_CURRENT, std.status_current)
         contentValues.put(STATUS_MAX, std.status_max)
+
         val success = db.insert(TBL_STATUS, null, contentValues)
         db.close()
         return success
@@ -103,6 +107,7 @@ class SQLiteHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME,
         return stdList
     }
 
+    // TODO - function need be working when get connection
     @SuppressLint("Range")
     fun getDeviceStatusHistory(deviceID: Int): ArrayList<StatusModel> {
         val stdList: ArrayList<StatusModel> = ArrayList()
@@ -128,7 +133,7 @@ class SQLiteHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME,
         if(cursor.moveToFirst()) {
             do {
                 statusId = cursor.getInt(cursor.getColumnIndex("status_id"))
-                statusToDevice = cursor.getInt(cursor.getColumnIndex("id"))
+                statusToDevice = cursor.getInt(cursor.getColumnIndex("status_to_device"))
                 statusDate = cursor.getString(cursor.getColumnIndex("status_date"))
                 statusMin = cursor.getString(cursor.getColumnIndex("status_min"))
                 statusCurrent = cursor.getString(cursor.getColumnIndex("status_current"))
@@ -144,10 +149,8 @@ class SQLiteHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME,
 
     fun deleteDevice(id: Int): Int {
         val db = this.writableDatabase
-
         val contentValues = ContentValues()
         contentValues.put(ID, id)
-
         val success = db.delete(TBL_DEVICE, "id=$id", null)
         db.close()
         return success

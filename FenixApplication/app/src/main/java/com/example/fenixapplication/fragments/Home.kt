@@ -28,6 +28,7 @@ class Home : Fragment(R.layout.fragment_home) {
         dataInitialize()
         sqliteHelper = SQLiteHelper(context)
         recyclerInitialize()
+        adapter?.activateButtons(false)
     }
 
     private fun recyclerInitialize() {

@@ -12,6 +12,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.DeviceViewHolder>()
 
     private var stdList: ArrayList<DeviceModel> = ArrayList()
     private var onClickDeleteItem: ((DeviceModel) -> Unit)? = null
+    private var activate: Boolean = false
 
     fun addItems( items : ArrayList<DeviceModel>) {
         this.stdList = items
@@ -29,17 +30,31 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.DeviceViewHolder>()
     override fun onBindViewHolder(holder: DeviceViewHolder, position: Int) {
         val std = stdList[position]
         holder.bindView(std)
-        holder.deleteBtn.setOnClickListener { onClickDeleteItem?.invoke(std) }
+
+        if(activate) {
+            holder.deleteBtn?.visibility = View.VISIBLE;
+            holder.deleteBtn?.setOnClickListener { onClickDeleteItem?.invoke(std)}
+        } else {
+            holder.deleteBtn?.visibility = View.INVISIBLE
+        }
     }
 
     override fun getItemCount(): Int {
         return stdList.size
     }
 
+    fun activateButtons(activate: Boolean) {
+        this.activate = activate
+        notifyDataSetChanged()
+    }
+
     class DeviceViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
         private var deviceId = view.findViewById<TextView>(R.id.device_name)
-        var viewBtn = view.findViewById<Button>(R.id.btnViewStatuses)
-        var deleteBtn = view.findViewById<Button>(R.id.btnDeleteDevice)
+
+        // TODO - viewBtn need be show last 7 days device statuses
+        // var viewBtn = view.findViewById<Button>(R.id.btnViewStatuses)
+
+        var deleteBtn: Button? = view.findViewById<Button>(R.id.btnDeleteDevice)
         fun bindView(std: DeviceModel) {
             deviceId.text = std.deviceId
         }
