@@ -19,7 +19,7 @@ public:
     uint32_t GetData()
     {
         uint32_t val = data_.at(datapoint).second;
-        if (data_.size() < datapoint) {
+        if (data_.size() > datapoint) {
             datapoint++;
         }
         return val;
