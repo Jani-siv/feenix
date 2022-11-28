@@ -33,6 +33,15 @@ private:
     void
     mov_t2_reg(uint32_t data, std::shared_ptr<registers::Registers> &registers,
                std::shared_ptr<memory::Mmu> &mmu);
+    void sub_t1_sp_imm(uint16_t data, std::shared_ptr<registers::Registers>& registers);
+    void add_t1_imm(uint16_t data, std::shared_ptr<registers::Registers>& registers);
+    void ldr_t1_lit(uint16_t data, std::shared_ptr<registers::Registers>& registers,
+                    std::shared_ptr<memory::Mmu>& mmu);
+    void ldm(uint16_t data, std::shared_ptr<registers::Registers>& registers);
+    void stm_t1(uint16_t data, std::shared_ptr<registers::Registers>& registers,
+                std::shared_ptr<memory::Mmu>& mmu);
+    void ldrb_t1_imm(uint16_t data, std::shared_ptr<registers::Registers>& registers,
+                     std::shared_ptr<memory::Mmu>& mmu);
 };
 
 } //namespace assembler

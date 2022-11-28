@@ -19,7 +19,9 @@ public:
     uint32_t GetData()
     {
         uint32_t val = data_.at(datapoint).second;
-        datapoint++;
+        if (data_.size() < datapoint) {
+            datapoint++;
+        }
         return val;
     }
     std::vector<std::pair<uint32_t, uint32_t>> data_;
@@ -103,7 +105,7 @@ TEST_F(ExecuteTest, Push_t1_07regNoLR)
         EXPECT_EQ(i,mem->ReadData32(0x0));
     }
 }
-//af00 ADD_T1_SP_IMM
+
 TEST_F(ExecuteTest, Add_t1_sp_imm_zerovalue_to_r7)
 {
     std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
@@ -111,6 +113,91 @@ TEST_F(ExecuteTest, Add_t1_sp_imm_zerovalue_to_r7)
     reg->writeRegister(7,0x00);
     SUT.executeCommand("ADD_T1_SP_IMM", 0xaf00,reg,mem);
     EXPECT_EQ(0x20,reg->readRegister(7));
+}
+
+TEST_F(ExecuteTest, AddValR7PushInStackAndSubT1SpImm)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    reg->writeRegister(MSP,0x20);
+    //add value to reg 7
+    reg->writeRegister(7,0x02);
+    //push in stack
+    SUT.executeCommand("PUSH_T1", 0xb480,reg,mem);
+    //sub value from imm7 value destination register 13
+    EXPECT_EQ(0x1E,reg->readRegister(MSP));
+    SUT.executeCommand("SUB_T1_SP_IMM", 0x02,reg,mem);
+    EXPECT_EQ(0x1C,reg->readRegister(MSP));
+}
+
+TEST_F(ExecuteTest, Add1ToReg0AndSetResultReg1)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    reg->writeRegister(MSP,0x20);
+    reg->writeRegister(0,0x01);
+    reg->writeRegister(1,0x0);
+    SUT.executeCommand("ADD_T1_IMM", 0x1C41,reg,mem);
+    EXPECT_EQ(0x2,reg->readRegister(1));
+}
+// LDR_T1_LIT 0x4A09
+TEST_F(ExecuteTest, ldrCalcImmOffsetOfPcLoadWordToRegister)
+{
+    //58 mem 000000e0
+    //pc 36
+    //reg2
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    mem->WriteData32(58,0x000000e0);
+    reg->writeRegister(PC,0x36);
+    SUT.executeCommand("LDR_T1_LIT", 0x4A09,reg,mem);
+    EXPECT_EQ(0x000000e0,reg->readRegister(2));
+}
+//LDM 0xCA13 ldmia	r2!, {r0, r1, r4}
+TEST_F(ExecuteTest, LdmR2ToR0R1R4)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    reg->writeRegister(2,0xBEEF);
+    reg->writeRegister(0,0x0);
+    reg->writeRegister(1,0x0);
+    reg->writeRegister(4,0x0);
+    SUT.executeCommand("LDM", 0xCA13,reg,mem);
+    EXPECT_EQ(0xBEEF,reg->readRegister(0));
+    EXPECT_EQ(0xBEEF,reg->readRegister(1));
+    EXPECT_EQ(0xBEEF,reg->readRegister(4));
+}
+//STM_T1 0xC313
+TEST_F(ExecuteTest, StmR0R1wordToR2AddressAndWriteLastAddressToR2)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    //base address
+    reg->writeRegister(2,0x20);
+    //data registers
+    reg->writeRegister(0,0xDEADBEEF);
+    reg->writeRegister(1,0xBEEFDEAD);
+    SUT.executeCommand("STM_T1", 0x4A09,reg,mem);
+    EXPECT_EQ(0xDEADBEEF,mem->ReadData32(0x20));
+    EXPECT_EQ(0xBEEFDEAD,mem->ReadData32(0x24));
+    EXPECT_EQ(0x40,reg->readRegister(2));
+}
+
+TEST_F(ExecuteTest, LdrbGetAddressFromR2BaseRefAddOffsetAndStoreInRegNo32Extens)
+{
+    //add 0x2 to base reg val
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    mem->WriteData32(0x12,0x000000e0);
+    reg->writeRegister(1,0x10);
+    reg->writeRegister(2,0x0);
+    SUT.executeCommand("LDRB_T1_IMM", 0x788A ,reg,mem);
+    EXPECT_EQ(0x00e0,reg->readRegister(2));
+}
+
+TEST_F(ExecuteTest, LdrbGetAddressFromR2BaseRefAddOffsetAndStoreInRegExtens32)
+{
+    //add 0x2 to base reg val
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    mem->WriteData32(0x10001110,0x000000e0);
+    reg->writeRegister(1,0x10001110);
+    reg->writeRegister(2,0x0);
+    SUT.executeCommand("LDRB_T1_IMM", 0x788A ,reg,mem);
+    EXPECT_EQ(0x00e0,reg->readRegister(2));
 }
 
 } //namespace tests

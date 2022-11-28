@@ -42,7 +42,7 @@ void Core::StartCore()
             //todo parse command and make it happend
             //todo add +1 to PC if assembly not override this
         }
-        if (block == 10) {
+        if (block == 100) {
             break;
         }
         block++;

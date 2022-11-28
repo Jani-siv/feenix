@@ -110,8 +110,8 @@ bool Assembler::adc_reg(uint16_t command)
 }
 bool Assembler::add_t1_imm(uint16_t command)
 {
-    command = command >> 8;
-    return ((command - 0x1C) == 0);
+    command = command >> 9;
+    return ((command - 0xE) == 0);
 }
 bool Assembler::add_t2_imm(uint16_t command)
 {
