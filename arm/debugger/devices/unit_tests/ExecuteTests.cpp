@@ -34,7 +34,6 @@ namespace cpu {
 namespace assembler {
 namespace tests {
 
-
 class ExecuteTest : public testing::Test
 {
 public:
@@ -138,7 +137,7 @@ TEST_F(ExecuteTest, Add1ToReg0AndSetResultReg1)
     SUT.executeCommand("ADD_T1_IMM", 0x1C41,reg,mem);
     EXPECT_EQ(0x2,reg->readRegister(1));
 }
-// LDR_T1_LIT 0x4A09
+
 TEST_F(ExecuteTest, ldrCalcImmOffsetOfPcLoadWordToRegister)
 {
     //58 mem 000000e0
@@ -150,7 +149,7 @@ TEST_F(ExecuteTest, ldrCalcImmOffsetOfPcLoadWordToRegister)
     SUT.executeCommand("LDR_T1_LIT", 0x4A09,reg,mem);
     EXPECT_EQ(0x000000e0,reg->readRegister(2));
 }
-//LDM 0xCA13 ldmia	r2!, {r0, r1, r4}
+
 TEST_F(ExecuteTest, LdmR2ToR0R1R4)
 {
     std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
@@ -163,7 +162,7 @@ TEST_F(ExecuteTest, LdmR2ToR0R1R4)
     EXPECT_EQ(0xBEEF,reg->readRegister(1));
     EXPECT_EQ(0xBEEF,reg->readRegister(4));
 }
-//STM_T1 0xC313
+
 TEST_F(ExecuteTest, StmR0R1wordToR2AddressAndWriteLastAddressToR2)
 {
     std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
@@ -180,7 +179,6 @@ TEST_F(ExecuteTest, StmR0R1wordToR2AddressAndWriteLastAddressToR2)
 
 TEST_F(ExecuteTest, LdrbGetAddressFromR2BaseRefAddOffsetAndStoreInRegNo32Extens)
 {
-    //add 0x2 to base reg val
     std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
     mem->WriteData32(0x12,0x000000e0);
     reg->writeRegister(1,0x10);
@@ -191,7 +189,6 @@ TEST_F(ExecuteTest, LdrbGetAddressFromR2BaseRefAddOffsetAndStoreInRegNo32Extens)
 
 TEST_F(ExecuteTest, LdrbGetAddressFromR2BaseRefAddOffsetAndStoreInRegExtens32)
 {
-    //add 0x2 to base reg val
     std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
     mem->WriteData32(0x10001110,0x000000e0);
     reg->writeRegister(1,0x10001110);
