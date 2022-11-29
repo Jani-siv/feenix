@@ -41,9 +41,9 @@ class Connections : Fragment(R.layout.fragment_connections) {
 
         btnAddConnection.setOnClickListener { addConnectionToDatabase() }
         btnRefresh.setOnClickListener { getDevicesFromDatabase() }
+
         adapter?.activateButtons(true)
         adapter?.setOnClickDeleteItem {
-            Log.e("testing", "${it.id}")
             deleteDevice(it.id)
         }
     }

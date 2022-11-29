@@ -124,7 +124,7 @@ class SQLiteHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME,
         }
 
         var statusId: Int
-        var statusToDevice: Int
+        var statusToDevice: String
         var statusDate: String
         var statusMin: String
         var statusCurrent: String
@@ -133,7 +133,7 @@ class SQLiteHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME,
         if(cursor.moveToFirst()) {
             do {
                 statusId = cursor.getInt(cursor.getColumnIndex("status_id"))
-                statusToDevice = cursor.getInt(cursor.getColumnIndex("status_to_device"))
+                statusToDevice = cursor.getString(cursor.getColumnIndex("status_to_device"))
                 statusDate = cursor.getString(cursor.getColumnIndex("status_date"))
                 statusMin = cursor.getString(cursor.getColumnIndex("status_min"))
                 statusCurrent = cursor.getString(cursor.getColumnIndex("status_current"))
