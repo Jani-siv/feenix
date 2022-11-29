@@ -10,7 +10,7 @@ Registers::Registers()
     InitRegisters();
 }
 
-uint32_t Registers::readRegister(uint8_t registerAddress)
+uint32_t Registers::readRegister(uint16_t registerAddress)
 {
     auto pointer = RegisterMap_.find(registerAddress);
     if (pointer != RegisterMap_.end()) {
@@ -19,7 +19,7 @@ uint32_t Registers::readRegister(uint8_t registerAddress)
     return 0xFFFFFFFF;
 }
 
-void Registers::writeRegister(uint8_t dest, uint32_t value)
+void Registers::writeRegister(uint16_t dest, uint32_t value)
 {
     auto pointer = RegisterMap_.find(dest);
     if (pointer != RegisterMap_.end()) {
@@ -43,6 +43,9 @@ void Registers::InitRegisters()
         ptr = &gpRegisters_[i];
         RegisterMap_[i]=ptr;
     }
+    writeRegister(MSP,0x0);
+    writeRegister(LR,0xFFFFFFFF);
+    writeRegister(PC,0x2);
 }
 
 } // namespace registers

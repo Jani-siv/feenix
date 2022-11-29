@@ -33,7 +33,7 @@ bool Assembler::and_imm(uint32_t command)
     return false;
 }
 
-std::string Assembler::ExecuteThumb(uint32_t command)
+std::string Assembler::GetThumbCode(uint32_t command)
 {
     if(adc_reg(command)) {return "ADC_REG";}
   //  if(adc_t2(command)) {return "ADC_T2";}
@@ -110,8 +110,8 @@ bool Assembler::adc_reg(uint16_t command)
 }
 bool Assembler::add_t1_imm(uint16_t command)
 {
-    command = command >> 8;
-    return ((command - 0x1C) == 0);
+    command = command >> 9;
+    return ((command - 0xE) == 0);
 }
 bool Assembler::add_t2_imm(uint16_t command)
 {

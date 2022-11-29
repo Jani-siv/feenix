@@ -20,7 +20,7 @@ class Assembler{
 public:
     Assembler()=default;
     ~Assembler()=default;
-    std::string ExecuteThumb(uint32_t command);
+    std::string GetThumbCode(uint32_t command);
 private:
     uint8_t apsrFlags_ = 0x0;
     //thumb
