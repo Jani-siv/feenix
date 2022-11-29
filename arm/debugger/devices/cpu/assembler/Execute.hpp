@@ -19,7 +19,6 @@ public:
     void executeCommand(std::string command, uint32_t data,
                         std::shared_ptr<registers::Registers>& registers, std::shared_ptr<memory::Mmu>& mmu);
 private:
-
     bool IsDoubleInstruction() const;
     bool doubleInstruction = false;
     uint32_t firstPartOfInstruction = 0x0;

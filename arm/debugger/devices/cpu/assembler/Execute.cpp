@@ -156,7 +156,6 @@ Execute::ldr_t1_lit(uint16_t data, std::shared_ptr<registers::Registers> &regist
     uint32_t dataFromMemory = mmu->ReadData32((pcVal - (imm8) + pcVal + 0x1));
     registers->writeRegister(destination,dataFromMemory);
     registers->writeRegister(PC,(registers->readRegister(PC)+align));
-
 }
 
 void Execute::ldm(uint16_t data, std::shared_ptr<registers::Registers> &registers)
