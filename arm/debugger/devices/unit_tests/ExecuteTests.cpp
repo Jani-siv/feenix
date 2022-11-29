@@ -12,7 +12,15 @@ public:
     {
         data_.emplace_back(address, data);
     }
+    void WriteData16(uint32_t address, uint16_t data) override
+    {
+        data_.emplace_back(address, data);
+    }
     uint32_t ReadData32(uint32_t address) override
+    {
+        return GetData();
+    }
+    uint16_t ReadData16(uint32_t address) override
     {
         return GetData();
     }
@@ -195,6 +203,66 @@ TEST_F(ExecuteTest, LdrbGetAddressFromR2BaseRefAddOffsetAndStoreInRegExtens32)
     reg->writeRegister(2,0x0);
     SUT.executeCommand("LDRB_T1_IMM", 0x788A ,reg,mem);
     EXPECT_EQ(0x00e0,reg->readRegister(2));
+}
+
+TEST_F(ExecuteTest, storeRegisterByteToMemoryExtens32)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    reg->writeRegister(2,0xBEEF);
+    reg->writeRegister(3,0xDEADBEEF);
+    SUT.executeCommand("STRB_T1_IMM", 0x701A ,reg,mem);
+    EXPECT_EQ(0xBEEF,mem->ReadData16(0xDEADBEEF));
+}
+
+TEST_F(ExecuteTest, storeRegisterByteToMemoryAddImm5ValueToMemLocation)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    reg->writeRegister(2,0xBEEF);
+    reg->writeRegister(3,0x10);
+    SUT.executeCommand("STRB_T1_IMM", 0x709A ,reg,mem);
+    EXPECT_EQ(0xBEEF,mem->ReadData16(0x12));
+}
+
+TEST_F(ExecuteTest, storeRegisterWordToMemoryExtens32)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    reg->writeRegister(2,0xDEADBEEF);
+    reg->writeRegister(3,0xDEADBEEF);
+    SUT.executeCommand("STR_T1_IMM", 0x701A ,reg,mem);
+    EXPECT_EQ(0xDEADBEEF,mem->ReadData32(0xDEADBEEF));
+}
+
+TEST_F(ExecuteTest, storeRegisterWordToMemoryAddImm5ValueToMemLocation)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    reg->writeRegister(2,0xDEADBEEF);
+    reg->writeRegister(3,0x10);
+    SUT.executeCommand("STR_T1_IMM", 0x709A ,reg,mem);
+    EXPECT_EQ(0xDEADBEEF,mem->ReadData32(0x12));
+}
+
+TEST_F(ExecuteTest, loadWordFromMemoryAndStoreRegisterExtens32)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    //target
+    reg->writeRegister(2,0x0);
+    //base
+    reg->writeRegister(3,0x10);
+    mem->WriteData16(0x10,0xBEEF);
+    SUT.executeCommand("LDR_T1_IMM", 0x681A ,reg,mem);
+    EXPECT_EQ(0xBEEF,reg->readRegister(0x2));
+}
+
+TEST_F(ExecuteTest, loadWordFromMemoryAndStoreRegisterAddImm5ToAddr)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    //target
+    reg->writeRegister(2,0x0);
+    //base
+    reg->writeRegister(3,0x10);
+    mem->WriteData16(0x12,0xBEEF);
+    SUT.executeCommand("LDR_T1_IMM", 0x689A ,reg,mem);
+    EXPECT_EQ(0xBEEF,reg->readRegister(0x2));
 }
 
 } //namespace tests

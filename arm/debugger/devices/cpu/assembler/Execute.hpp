@@ -41,6 +41,12 @@ private:
                 std::shared_ptr<memory::Mmu>& mmu);
     void ldrb_t1_imm(uint16_t data, std::shared_ptr<registers::Registers>& registers,
                      std::shared_ptr<memory::Mmu>& mmu);
+    void strb_t1_imm(uint16_t data, std::shared_ptr<registers::Registers>& registers,
+        std::shared_ptr<memory::Mmu>& mmu);
+    void str_t1_imm(uint16_t data, std::shared_ptr<registers::Registers>& registers,
+                    std::shared_ptr<memory::Mmu>& mmu);
+    void ldr_t1_imm(uint16_t data, std::shared_ptr<registers::Registers>& registers,
+                    std::shared_ptr<memory::Mmu>& mmu);
 };
 
 } //namespace assembler

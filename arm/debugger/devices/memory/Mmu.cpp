@@ -64,7 +64,7 @@ uint32_t Mmu::ReadData32(uint32_t address)
   return memory_[memName].ReadMemory32(address);
 }
 
-uint16_t Mmu::ReadData16(uint16_t address)
+uint16_t Mmu::ReadData16(uint32_t address)
 {
     //todo no need for memory location modification
     MemoryName memName = getMemoryName(address);
@@ -129,6 +129,13 @@ void Mmu::DumpMemoryInFile(std::string filename, uint32_t startAddress, uint32_t
     }
     //memory_[memoryName].PrintMemory();
     dump.DumpMemoryDataToFile(data);
+}
+void Mmu::WriteData16(uint32_t address, uint16_t data)
+{
+    MemoryName memName = getMemoryName(address);
+    SectionName secName = getSectionName(address);
+    uint32_t transformedAddress = sections_[secName].GetLmaMapping(address);
+    memory_[memName].WriteMemory16(ConvertLmaToVectorPosition(transformedAddress), data);
 }
 
 } // namespace memory

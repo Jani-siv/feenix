@@ -24,8 +24,9 @@ public:
     virtual void DumpMemoryInFile(std::string filename, uint32_t startAddress, uint32_t endAddress);
     virtual uint32_t ReadData32(uint32_t address);
     virtual void WriteData32(uint32_t address, uint32_t data);
+    virtual void WriteData16(uint32_t address, uint16_t data);
     std::string getMemoryName(uint32_t address);
-    uint16_t ReadData16(uint16_t address);
+    virtual uint16_t ReadData16(uint32_t address);
 private:
     Dumpper dump;
     static uint32_t ConvertLmaToVectorPosition(uint32_t address);
