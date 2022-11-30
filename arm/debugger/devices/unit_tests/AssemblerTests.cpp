@@ -67,7 +67,7 @@ TEST_F(AssemblerTest, assemblerThumbInstructioSet)
     command[0x40C0] = "LSR_T1_REG";
     command[0x2000] = "MOV_T1_IMM";
     command[0x4600] = "MOV_T1_REG";
-    command[0x0000] = "MOV_T2_REG";
+    command[0x0018] = "MOV_T2_REG";
     command[0x4340] = "MUL_T1";
     command[0x43C0] = "MVN_T1_REG";
     command[0x4300] = "ORR_T1_REG";

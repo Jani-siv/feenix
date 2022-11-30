@@ -47,6 +47,25 @@ void Registers::InitRegisters()
     writeRegister(LR,0xFFFFFFFF);
     writeRegister(PC,0x2);
 }
+void Registers::SetConditionFlag(std::string flag)
+{
+    if(flag == "Z")
+    {
+        SET_FLAG(apsr_,FLAG_Z);
+    }
+    if(flag == "C")
+    {
+        SET_FLAG(apsr_,FLAG_C);
+    }
+    if(flag == "N")
+    {
+        SET_FLAG(apsr_,FLAG_N);
+    }
+    if(flag == "V")
+    {
+        SET_FLAG(apsr_,FLAG_V);
+    }
+}
 
 } // namespace registers
 } // namespace devices

@@ -265,6 +265,93 @@ TEST_F(ExecuteTest, loadWordFromMemoryAndStoreRegisterAddImm5ToAddr)
     EXPECT_EQ(0xBEEF,reg->readRegister(0x2));
 }
 
+TEST_F(ExecuteTest, movImmValueToRegistrer)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    reg->writeRegister(1,0x0);
+    SUT.executeCommand("MOV_T1_IMM", 0x2180 ,reg,mem);
+    EXPECT_EQ(0x80,reg->readRegister(0x1));
+}
+
+TEST_F(ExecuteTest, shiftImmValueLeftAndCopyToDestRegistrer)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    reg->writeRegister(1,0x1);
+    SUT.executeCommand("LSL_T1_IMM", 0x0089 ,reg,mem);
+    EXPECT_EQ(0x4,reg->readRegister(0x1));
+}
+
+TEST_F(ExecuteTest, immOrRegisters)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    //base
+    reg->writeRegister(1,0x0);
+    //des
+    reg->writeRegister(2,0x1);
+    SUT.executeCommand("ORR_T1_REG", 0x430A ,reg,mem);
+    EXPECT_EQ(0x1,reg->readRegister(0x2));
+}
+
+TEST_F(ExecuteTest, moveT2Registers)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    //base
+    reg->writeRegister(3,0x100);
+    //des
+    reg->writeRegister(0,0x0);
+    SUT.executeCommand("MOV_T2_REG", 0x0018 ,reg,mem);
+    EXPECT_EQ(0x100,reg->readRegister(0x3));
+}
+
+TEST_F(ExecuteTest, addRegisterShiftedValue)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    //base
+    reg->writeRegister(3,0x1);
+    //shifted
+    reg->writeRegister(2,0x0);
+    //des
+    //reg->writeRegister(3,0x0);
+    SUT.executeCommand("ADD_T1_REG", 0x18D2 ,reg,mem);
+    EXPECT_EQ(0x4,reg->readRegister(0x2));
+}
+
+TEST_F(ExecuteTest, compareImmValueAgainstReg)
+{
+//todo add all condition flag
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    reg->writeRegister(3,0x1);
+    SUT.executeCommand("CMP_IMM", 0x2B01 ,reg,mem);
+    EXPECT_EQ(0x1,reg->GetConditionFlags());
+}
+
+TEST_F(ExecuteTest, bWithCondFlagsFullZero)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    reg->writeRegister(PC,0x0);
+    reg->ClearConditionFlags();
+    SUT.executeCommand("B_T1", 0xD007 ,reg,mem);
+    EXPECT_EQ(0x10,reg->readRegister(PC));
+}
+
+TEST_F(ExecuteTest, bWithCondFlags)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    reg->writeRegister(PC,0x0);
+    reg->ClearConditionFlags();
+    reg->SetConditionFlag("Z");
+    SUT.executeCommand("B_T1", 0xD007 ,reg,mem);
+    EXPECT_EQ(0x2,reg->readRegister(PC));
+}
+
+TEST_F(ExecuteTest, addImm8ValToRegister)
+{
+    std::shared_ptr<memory::Mmu> mem = std::make_shared<memory::MEM>();
+    reg->writeRegister(0x3,0x0);
+    SUT.executeCommand("ADD_T2_IMM", 0x3301 ,reg,mem);
+    EXPECT_EQ(0x1,reg->readRegister(0x3));
+}
+
 } //namespace tests
 } //namespace assembler
 } //namespace cpu
