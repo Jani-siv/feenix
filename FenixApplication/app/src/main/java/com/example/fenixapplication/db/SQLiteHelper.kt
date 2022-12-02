@@ -13,11 +13,9 @@ class SQLiteHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME,
     companion object{
         private const val DATABASE_VERSION = 1
         private const val DATABASE_NAME = "devices.db"
-
         private const val TBL_DEVICE = "tbl_device"
         private const val ID = "id"
         private const val DEVICE_ID = "deviceId"
-
         private const val TBL_STATUS = "tbl_status"
         private const val STATUS_ID = "status_id"
         private const val STATUS_TO_DEVICE = "status_to_device"
@@ -52,11 +50,9 @@ class SQLiteHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME,
 
     fun insertDevice(std: DeviceModel): Long {
         val db = this.writableDatabase
-
         val contentValues = ContentValues()
         contentValues.put(ID, std.id)
         contentValues.put(DEVICE_ID, std.deviceId)
-
         val success = db.insert(TBL_DEVICE, null, contentValues)
         db.close()
         return success
@@ -141,8 +137,8 @@ class SQLiteHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME,
                 val std = StatusModel(status_id = statusId, status_to_device = statusToDevice,
                     status_date = statusDate, status_min = statusMin, status_current = statusCurrent, status_max = statusMax)
                 stdList.add(std)
-
-            } while (cursor.moveToFirst())
+            }
+            while (cursor.moveToFirst())
         }
         return stdList
     }

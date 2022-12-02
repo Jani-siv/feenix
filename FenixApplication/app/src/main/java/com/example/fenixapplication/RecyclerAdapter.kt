@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fenixapplication.db.DeviceModel
 
 class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.DeviceViewHolder>() {
-
     private var stdList: ArrayList<DeviceModel> = ArrayList()
     private var onClickDeleteItem: ((DeviceModel) -> Unit)? = null
     private var activate: Boolean = false
@@ -30,7 +29,6 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.DeviceViewHolder>()
     override fun onBindViewHolder(holder: DeviceViewHolder, position: Int) {
         val std = stdList[position]
         holder.bindView(std)
-
         if(activate) {
             holder.deleteBtn?.visibility = View.VISIBLE;
             holder.deleteBtn?.setOnClickListener { onClickDeleteItem?.invoke(std)}

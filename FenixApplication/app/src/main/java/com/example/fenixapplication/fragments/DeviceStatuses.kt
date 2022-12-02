@@ -35,7 +35,6 @@ class DeviceStatuses : Fragment(R.layout.fragment_home) {
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = RecyclerAdapter()
         recyclerView.adapter = adapter
-
         val stdList = sqliteHelper.getAllDevices()
         adapter?.addItems(stdList)
     }
@@ -43,5 +42,4 @@ class DeviceStatuses : Fragment(R.layout.fragment_home) {
     private fun dataInitialize() {
         recyclerView = requireView().findViewById(R.id.recyclerView)
     }
-
 }
