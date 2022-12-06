@@ -9,15 +9,9 @@ constexpr uint8_t align = 0x2;
 void Execute::executeCommand(std::string command, uint32_t data,
                              std::shared_ptr<registers::Registers> &registers, std::shared_ptr<memory::Mmu>& mmu)
 {
-    if (command == "nope") {
-        if(IsDoubleInstruction())
-        {
-            command = lastCommand_;
-        }
-        else
-        {
-            registers->writeRegister(PC,registers->readRegister(PC)+align);
-        }
+    if(IsDoubleInstruction())
+    {
+        command = lastCommand_;
     }
     if(command=="B_T2") { b_t2(data, registers);}
     if(command=="BL") { bl(command, data, registers);}
