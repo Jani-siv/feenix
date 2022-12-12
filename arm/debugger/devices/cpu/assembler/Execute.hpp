@@ -30,8 +30,7 @@ private:
     void push(uint16_t data, std::shared_ptr<registers::Registers> &registers, std::shared_ptr<memory::Mmu>& mmu);
     void add_t1_sp_imm(uint16_t data, std::shared_ptr<registers::Registers> &registers);
     void
-    mov_t2_reg(uint32_t data, std::shared_ptr<registers::Registers> &registers,
-               std::shared_ptr<memory::Mmu> &mmu);
+    mov_t2_reg(uint32_t data, std::shared_ptr<registers::Registers> &registers);
     void sub_t1_sp_imm(uint16_t data, std::shared_ptr<registers::Registers>& registers);
     void add_t1_imm(uint16_t data, std::shared_ptr<registers::Registers>& registers);
     void ldr_t1_lit(uint16_t data, std::shared_ptr<registers::Registers>& registers,
@@ -41,6 +40,19 @@ private:
                 std::shared_ptr<memory::Mmu>& mmu);
     void ldrb_t1_imm(uint16_t data, std::shared_ptr<registers::Registers>& registers,
                      std::shared_ptr<memory::Mmu>& mmu);
+    void strb_t1_imm(uint16_t data, std::shared_ptr<registers::Registers>& registers,
+        std::shared_ptr<memory::Mmu>& mmu);
+    void str_t1_imm(uint16_t data, std::shared_ptr<registers::Registers>& registers,
+                    std::shared_ptr<memory::Mmu>& mmu);
+    void ldr_t1_imm(uint16_t data, std::shared_ptr<registers::Registers>& registers,
+                    std::shared_ptr<memory::Mmu>& mmu);
+    void mov_t1_imm(uint16_t data, std::shared_ptr<registers::Registers>& registers);
+    void lsl_ti_imm(uint16_t data, std::shared_ptr<registers::Registers>& registers);
+    void orr_t1_reg(uint16_t data, std::shared_ptr<registers::Registers>& registers);
+    void add_t1_reg(uint16_t data, std::shared_ptr<registers::Registers>& registers);
+    void cmp_imm(uint16_t data, std::shared_ptr<registers::Registers>& registers);
+    void b_t1(uint16_t data, std::shared_ptr<registers::Registers>& registers);
+    void add_t2_imm(uint16_t data, std::shared_ptr<registers::Registers>& registers);
 };
 
 } //namespace assembler

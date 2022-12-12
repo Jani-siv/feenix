@@ -9,27 +9,31 @@ constexpr uint8_t align = 0x2;
 void Execute::executeCommand(std::string command, uint32_t data,
                              std::shared_ptr<registers::Registers> &registers, std::shared_ptr<memory::Mmu>& mmu)
 {
-    if (command == "nope") {
-        if(IsDoubleInstruction())
-        {
-            command = lastCommand_;
-        }
-        else
-        {
-            registers->writeRegister(PC,registers->readRegister(PC)+align);
-        }
+    if(IsDoubleInstruction())
+    {
+        command = lastCommand_;
     }
     if(command=="B_T2") { b_t2(data, registers);}
     if(command=="BL") { bl(command, data, registers);}
     if(command=="PUSH_T1") {push(data, registers, mmu);}
     if(command=="ADD_T1_SP_IMM") {add_t1_sp_imm(data,registers);}
-    if(command=="MOV_T2_REG") {mov_t2_reg(data,registers,mmu);}
+    if(command=="MOV_T2_REG") {mov_t2_reg(data,registers);}
     if(command=="SUB_T1_SP_IMM") {sub_t1_sp_imm(data,registers);}
     if(command=="ADD_T1_IMM") {add_t1_imm(data,registers);}
     if(command=="LDR_T1_LIT") {ldr_t1_lit(data, registers,mmu);}
     if(command=="LDM") {ldm(data,registers);}
     if(command=="STM_T1") {stm_t1(data, registers, mmu);}
     if(command=="LDRB_T1_IMM") {ldrb_t1_imm(data,registers,mmu);}
+    if(command=="STRB_T1_IMM") {strb_t1_imm(data, registers, mmu);}
+    if(command=="STR_T1_IMM") {str_t1_imm(data, registers, mmu);}
+    if(command=="LDR_T1_IMM") {ldr_t1_imm(data, registers, mmu);}
+    if(command=="MOV_T1_IMM") {mov_t1_imm(data, registers);}
+    if(command=="LSL_T1_IMM") {lsl_ti_imm(data, registers);}
+    if(command=="ORR_T1_REG") {orr_t1_reg(data, registers);}
+    if(command=="ADD_T1_REG") {add_t1_reg(data, registers);}
+    if(command=="CMP_IMM") {cmp_imm(data,registers);}
+    if(command=="B_T1") {b_t1(data,registers);}
+    if(command=="ADD_T2_IMM") {add_t2_imm(data, registers);}
 }
 
 void Execute::b_t2(uint16_t data, std::shared_ptr<registers::Registers> &registers)
@@ -121,10 +125,13 @@ void Execute::add_t1_sp_imm(uint16_t data, std::shared_ptr<registers::Registers>
     registers->writeRegister(reg,total);
     registers->writeRegister(PC,(registers->readRegister(PC)+align));
 }
-void Execute::mov_t2_reg(uint32_t data, std::shared_ptr<registers::Registers> &registers,
-                         std::shared_ptr<memory::Mmu> &mmu)
+void Execute::mov_t2_reg(uint32_t data, std::shared_ptr<registers::Registers> &registers)
 {
-//todo somehow I did skip this... It will be in another review
+    uint8_t desReg = (data&0x7);
+    data >>= 3;
+    uint8_t sourReg = (data&0x7);
+    registers->writeRegister(desReg,registers->readRegister(sourReg));
+    registers->writeRegister(PC,(registers->readRegister(PC)+align));
 }
 
 void Execute::sub_t1_sp_imm(uint16_t data, std::shared_ptr<registers::Registers> &registers)
@@ -208,6 +215,141 @@ void Execute::ldrb_t1_imm(uint16_t data, std::shared_ptr<registers::Registers> &
         registers->writeRegister(targetReg,mmu->ReadData32(totalAddr));
     }
     registers->writeRegister(PC,(registers->readRegister(PC)+align));
+}
+
+void Execute::strb_t1_imm(uint16_t data, std::shared_ptr<registers::Registers> &registers, std::shared_ptr<memory::Mmu> &mmu)
+{
+    uint8_t targetReg = (data & 0x7);
+    data >>= 3;
+    uint8_t baseReg = (data & 0x7);
+    data >>= 3;
+    uint8_t imm5 = (data & 0x1F);
+    if (imm5 == 0) {
+        mmu->WriteData16(registers->readRegister(baseReg), registers->readRegister(targetReg));
+    }
+    else {
+        uint32_t memAddress = registers->readRegister(baseReg) + imm5;
+        mmu->WriteData16(memAddress, registers->readRegister(targetReg));
+    }
+    registers->writeRegister(PC,(registers->readRegister(PC)+align));
+}
+
+void Execute::str_t1_imm(uint16_t data, std::shared_ptr<registers::Registers> &registers, std::shared_ptr<memory::Mmu> &mmu)
+{
+    uint8_t targetReg = (data & 0x7);
+    data >>= 3;
+    uint8_t baseReg = (data & 0x7);
+    data >>= 3;
+    uint8_t imm5 = (data & 0x1F);
+    if (imm5 == 0) {
+        mmu->WriteData32(registers->readRegister(baseReg), registers->readRegister(targetReg));
+    }
+    else {
+        uint32_t memAddress = registers->readRegister(baseReg) + imm5;
+        mmu->WriteData32(memAddress, registers->readRegister(targetReg));
+    }
+    registers->writeRegister(PC,(registers->readRegister(PC)+align));
+}
+void
+Execute::ldr_t1_imm(uint16_t data, std::shared_ptr<registers::Registers> &registers, std::shared_ptr<memory::Mmu> &mmu)
+{
+    uint8_t targetReg = (data & 0x7);
+    data >>= 3;
+    uint8_t baseReg = (data & 0x7);
+    data >>= 3;
+    uint8_t imm5 = (data & 0x1F);
+    if (imm5 == 0) {
+        auto memoryData = mmu->ReadData16(registers->readRegister(baseReg));
+        registers->writeRegister(targetReg, memoryData);
+    }
+    else {
+        auto memAddr = registers->readRegister(baseReg) + imm5;
+        auto memoryData = mmu->ReadData16(memAddr);
+        registers->writeRegister(targetReg, memoryData);
+    }
+    registers->writeRegister(PC, (registers->readRegister(PC) + align));
+}
+void Execute::mov_t1_imm(uint16_t data, std::shared_ptr<registers::Registers> &registers)
+{
+    uint8_t imm8 = (data&0x00FF);
+    data >>= 8;
+    uint8_t desReg = (data&0x7);
+    registers->writeRegister(desReg,imm8);
+    registers->writeRegister(PC, (registers->readRegister(PC) + align));
+
+}
+void Execute::lsl_ti_imm(uint16_t data, std::shared_ptr<registers::Registers> &registers)
+{
+    uint8_t desReg = (data&0x7);
+    data >>= 3;
+    uint8_t sourReg = (data&0x7);
+    data >>= 3;
+    uint8_t imm5 = (data&0x1F);
+    uint32_t regData = registers->readRegister(sourReg);
+    regData <<= imm5;
+    registers->writeRegister(desReg,regData);
+    registers->writeRegister(PC, (registers->readRegister(PC) + align));
+}
+void Execute::orr_t1_reg(uint16_t data, std::shared_ptr<registers::Registers> &registers)
+{
+    uint8_t desReg = (data&0x7);
+    data >>= 3;
+    uint8_t sourReg = (data&0x7);
+    uint32_t dataFromDest = registers->readRegister(desReg);
+    uint32_t dataFromBase = registers->readRegister(sourReg);
+    dataFromDest = (dataFromDest | dataFromBase);
+    registers->writeRegister(desReg,dataFromDest);
+    registers->writeRegister(PC, (registers->readRegister(PC) + align));
+}
+void Execute::add_t1_reg(uint16_t data, std::shared_ptr<registers::Registers> &registers)
+{
+    uint8_t desReg = (data&0x7);
+    data >>= 3;
+    uint8_t shiftReg = (data&0x7);
+    data >>= 3;
+    uint8_t sourReg = (data&0x7);
+    uint32_t regData = registers->readRegister(sourReg);
+    regData <<= shiftReg;
+    registers->writeRegister(desReg,regData);
+    registers->writeRegister(PC, (registers->readRegister(PC) + align));
+}
+void Execute::cmp_imm(uint16_t data, std::shared_ptr<registers::Registers> &registers)
+{
+    uint8_t imm8 = (data&0x00FF);
+    data >>= 8;
+    uint8_t reg = (data&0x7);
+    //todo all condition need calculate here
+    if (registers->readRegister(reg)-imm8 == 0x0)
+    {
+        registers->SetConditionFlag("Z");
+    }
+    registers->writeRegister(PC, (registers->readRegister(PC) + align));
+}
+void Execute::b_t1(uint16_t data, std::shared_ptr<registers::Registers> &registers)
+{
+    uint8_t imm8 = (data&0xFF) * 0x2 + align;
+    data >>= 8;
+    uint8_t cond = (data&0xF);
+    if (cond == registers->GetConditionFlags())
+    {
+        registers->writeRegister(PC,registers->readRegister(PC)+imm8);
+        registers->ClearConditionFlags();
+    }
+    else
+    {
+        registers->writeRegister(PC, (registers->readRegister(PC) + align));
+        registers->ClearConditionFlags();
+    }
+}
+void Execute::add_t2_imm(uint16_t data, std::shared_ptr<registers::Registers> &registers)
+{
+    uint8_t imm8 = (data&0x00FF);
+    data >>= 8;
+    uint8_t reg = (data&0x7);
+    uint32_t regData = registers->readRegister(reg);
+    regData += imm8;
+    registers->writeRegister(reg,regData);
+    registers->writeRegister(PC, (registers->readRegister(PC) + align));
 }
 
 } //namespace assembler
