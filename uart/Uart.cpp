@@ -14,7 +14,6 @@ int main(int argc, char const* argv[])
     int opt = 1;
     int addrlen = sizeof(address);
     char buffer[1024] = { 0 };
-
     
     // Creating socket file descriptor
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
