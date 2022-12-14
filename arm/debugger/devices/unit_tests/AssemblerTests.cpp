@@ -15,7 +15,7 @@ public:
 TEST_F(AssemblerTest,testArea)
 {
     Assembler sut;
-    EXPECT_EQ(sut.GetThumbCode(0x0050), "LSL_T1_IMM");
+    EXPECT_EQ(sut.GetThumbCode(0x1230), "LSL_T1_IMM");
 }
 
 TEST_F(AssemblerTest, assemblerThumbInstructioSet)
