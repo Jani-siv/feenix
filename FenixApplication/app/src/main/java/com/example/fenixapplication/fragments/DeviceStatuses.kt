@@ -11,7 +11,7 @@ import com.example.fenixapplication.R
 import com.example.fenixapplication.RecyclerAdapter
 import com.example.fenixapplication.db.SQLiteHelper
 
-class Home : Fragment(R.layout.fragment_home) {
+class DeviceStatuses : Fragment(R.layout.fragment_home) {
 
     private lateinit var sqliteHelper: SQLiteHelper
     private lateinit var recyclerView: RecyclerView
@@ -35,7 +35,6 @@ class Home : Fragment(R.layout.fragment_home) {
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = RecyclerAdapter()
         recyclerView.adapter = adapter
-
         val stdList = sqliteHelper.getAllDevices()
         adapter?.addItems(stdList)
     }
@@ -43,5 +42,4 @@ class Home : Fragment(R.layout.fragment_home) {
     private fun dataInitialize() {
         recyclerView = requireView().findViewById(R.id.recyclerView)
     }
-
 }

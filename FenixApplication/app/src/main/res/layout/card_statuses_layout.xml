@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_margin="5dp"
+    app:cardBackgroundColor="#E4E4E4"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="15dp"
+    app:contentPadding="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/relativeLayout"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:textSize="18dp"
+            android:background="@drawable/text_view_style"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/min"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:textSize="18dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/text_view_style"
+            app:layout_constraintStart_toEndOf="@+id/date"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/now"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:textSize="18dp"
+            android:background="@drawable/text_view_style"
+            app:layout_constraintStart_toEndOf="@+id/min"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/max"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:textSize="12dp"
+            android:background="@drawable/text_view_style"
+            app:layout_constraintStart_toEndOf="@+id/now"
+            tools:ignore="MissingConstraints" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

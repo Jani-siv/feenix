@@ -1,5 +1,6 @@
 package com.example.fenixapplication.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,25 +34,36 @@ class Connections : Fragment(R.layout.fragment_connections) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         dataInitialize()
         recyclerInitialize()
         sqliteHelper = SQLiteHelper(context)
+
         btnAddConnection.setOnClickListener { addConnectionToDatabase() }
         btnRefresh.setOnClickListener { getDevicesFromDatabase() }
+
+        adapter?.activateButtons(true)
+        adapter?.setOnClickDeleteItem {
+            deleteDevice(it.id)
+        }
     }
 
     private fun addConnectionToDatabase() {
         val deviceId = deviceIdEd.text.toString()
-        if(deviceId.isEmpty()) {
+        if (deviceId.isEmpty()) {
             Toast.makeText(context, "Enter required field", Toast.LENGTH_SHORT).show()
-        } else {
+        }
+        else {
             val std = DeviceModel(deviceId = deviceId)
             val status = sqliteHelper.insertDevice(std)
             if(status > -1) {
                 Toast.makeText(context, "Device added", Toast.LENGTH_SHORT).show()
                 deviceIdEd.setText("")
                 deviceIdEd.requestFocus()
-            } else {
+                val stdList = sqliteHelper.getAllDevices()
+                adapter?.addItems(stdList)
+            }
+            else {
                 Toast.makeText(context, "Device not added", Toast.LENGTH_SHORT).show()
             }
         }
@@ -59,8 +71,24 @@ class Connections : Fragment(R.layout.fragment_connections) {
 
     private fun getDevicesFromDatabase() {
         val stdList = sqliteHelper.getAllDevices()
-        Log.e("ppp", "${stdList.size}")
         adapter?.addItems(stdList)
+    }
+
+    private fun deleteDevice(id: Int) {
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage("Delete this connection?")
+        builder.setCancelable(true)
+        builder.setPositiveButton("Yes") { dialog, _ ->
+            sqliteHelper.deleteDevice(id)
+            getDevicesFromDatabase()
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("No") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val alert = builder.create()
+        alert.show()
     }
 
     private fun recyclerInitialize() {
