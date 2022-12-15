@@ -10,4 +10,5 @@
         android:text="Settings"
         android:textSize="36dp"
         android:layout_gravity="center"/>
+
 </FrameLayout>

@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fenixapplication.R
-import com.example.fenixapplication.RecyclerAdapter
-import com.example.fenixapplication.db.SQLiteHelper
+import com.example.fenixapplication.recyclerAdapters.RecyclerAdapter
+import com.example.fenixapplication.db_models.SQLiteHelper
 
 class Home : Fragment(R.layout.fragment_home) {
 
@@ -35,7 +35,6 @@ class Home : Fragment(R.layout.fragment_home) {
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = RecyclerAdapter()
         recyclerView.adapter = adapter
-
         val stdList = sqliteHelper.getAllDevices()
         adapter?.addItems(stdList)
     }
@@ -43,5 +42,4 @@ class Home : Fragment(R.layout.fragment_home) {
     private fun dataInitialize() {
         recyclerView = requireView().findViewById(R.id.recyclerView)
     }
-
 }

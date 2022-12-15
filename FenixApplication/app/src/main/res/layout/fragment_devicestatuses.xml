@@ -6,17 +6,37 @@
     android:orientation="vertical"
     tools:context=".fragments.Home">
 
-    <TextView
-        android:id="@+id/device_name"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginBottom="10dp"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_vertical"
-        android:text="Device:"
-        android:textSize="28dp"
-        tools:ignore="MissingConstraints" />
+        android:layout_marginTop="24dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/device_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Device"
+            android:textSize="34sp"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/device_title_device_name_space"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" : "
+            android:textSize="34sp"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/device_name_statuses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="34sp"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,8 +44,9 @@
         tools:ignore="MissingConstraints">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/recyclerViewStatuses"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
     </RelativeLayout>
 </LinearLayout>

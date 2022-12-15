@@ -1,4 +1,4 @@
-package com.example.fenixapplication
+package com.example.fenixapplication.recyclerAdapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,12 +6,21 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fenixapplication.db.DeviceModel
+import com.example.fenixapplication.R
+import com.example.fenixapplication.db_models.DeviceModel
 
 class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.DeviceViewHolder>() {
     private var stdList: ArrayList<DeviceModel> = ArrayList()
     private var onClickDeleteItem: ((DeviceModel) -> Unit)? = null
     private var activate: Boolean = false
+
+    class DeviceViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
+        private var deviceName = view.findViewById<TextView>(R.id.device_name)
+        var deleteBtn: Button? = view.findViewById<Button>(R.id.btnDeleteDevice)
+        fun bindView(std: DeviceModel) {
+            deviceName.text = std.deviceId
+        }
+    }
 
     fun addItems( items : ArrayList<DeviceModel>) {
         this.stdList = items
@@ -44,17 +53,5 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.DeviceViewHolder>()
     fun activateButtons(activate: Boolean) {
         this.activate = activate
         notifyDataSetChanged()
-    }
-
-    class DeviceViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
-        private var deviceId = view.findViewById<TextView>(R.id.device_name)
-
-        // TODO - viewBtn need be show last 7 days device statuses
-        // var viewBtn = view.findViewById<Button>(R.id.btnViewStatuses)
-
-        var deleteBtn: Button? = view.findViewById<Button>(R.id.btnDeleteDevice)
-        fun bindView(std: DeviceModel) {
-            deviceId.text = std.deviceId
-        }
     }
 }
