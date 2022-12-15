@@ -11,14 +11,11 @@ public:
     void SetUp() override{}
     void TearDown() override{}
 };
-//todo armv7-m tests
-//  command[0xF0000000] = "AND_IMM"; //todo TST need add for this
-// command[0x75A00000] = "ADC_T2";
 
 TEST_F(AssemblerTest,testArea)
 {
     Assembler sut;
-    EXPECT_EQ(sut.GetThumbCode(0x0050), "LSL_T1_IMM");
+    EXPECT_EQ(sut.GetThumbCode(0x1230), "LSL_T1_IMM");
 }
 
 TEST_F(AssemblerTest, assemblerThumbInstructioSet)
