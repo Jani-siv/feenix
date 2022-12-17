@@ -12,20 +12,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
         android:gravity="center_vertical"
-        android:text="Add new connection"
+        android:text="Connections"
         android:textSize="28dp"
-        tools:ignore="HardcodedText,MissingConstraints"
-        />
-
-    <EditText
-        android:id="@+id/device_idED"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:hint="Enter device id"
-        android:inputType="text"
-        tools:ignore="Autofill,HardcodedText" />
+        tools:ignore="HardcodedText,MissingConstraints" />
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -53,6 +44,7 @@
             tools:ignore="HardcodedText" />
 
     </LinearLayout>
+
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="400dp"

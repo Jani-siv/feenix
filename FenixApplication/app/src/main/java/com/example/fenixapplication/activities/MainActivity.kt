@@ -1,9 +1,9 @@
-package com.example.fenixapplication
+package com.example.fenixapplication.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
+import com.example.fenixapplication.R
 import com.example.fenixapplication.fragments.*
 import com.example.fenixapplication.databinding.ActivityMainBinding
 

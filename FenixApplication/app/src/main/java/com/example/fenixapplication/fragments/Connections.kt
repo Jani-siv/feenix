@@ -1,5 +1,6 @@
 package com.example.fenixapplication.fragments
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
@@ -13,13 +14,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fenixapplication.R
-import com.example.fenixapplication.RecyclerAdapter
-import com.example.fenixapplication.db.DeviceModel
-import com.example.fenixapplication.db.SQLiteHelper
+import com.example.fenixapplication.recyclerAdapters.RecyclerAdapter
+import com.example.fenixapplication.db_models.DeviceModel
+import com.example.fenixapplication.db_models.SQLiteHelper
+import com.example.fenixapplication.db_models.StatusModel
 
 class Connections : Fragment(R.layout.fragment_connections) {
 
-    private lateinit var deviceIdEd: EditText
     private lateinit var btnAddConnection: Button
     private lateinit var btnRefresh: Button
     private lateinit var sqliteHelper: SQLiteHelper
@@ -34,39 +35,62 @@ class Connections : Fragment(R.layout.fragment_connections) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         dataInitialize()
-        recyclerInitialize()
         sqliteHelper = SQLiteHelper(context)
-
+        recyclerInitialize()
         btnAddConnection.setOnClickListener { addConnectionToDatabase() }
         btnRefresh.setOnClickListener { getDevicesFromDatabase() }
-
         adapter?.activateButtons(true)
         adapter?.setOnClickDeleteItem {
             deleteDevice(it.id)
         }
     }
 
+    @SuppressLint("ResourceType")
     private fun addConnectionToDatabase() {
-        val deviceId = deviceIdEd.text.toString()
-        if (deviceId.isEmpty()) {
-            Toast.makeText(context, "Enter required field", Toast.LENGTH_SHORT).show()
-        }
-        else {
-            val std = DeviceModel(deviceId = deviceId)
-            val status = sqliteHelper.insertDevice(std)
-            if(status > -1) {
-                Toast.makeText(context, "Device added", Toast.LENGTH_SHORT).show()
-                deviceIdEd.setText("")
-                deviceIdEd.requestFocus()
-                val stdList = sqliteHelper.getAllDevices()
-                adapter?.addItems(stdList)
+        val builder = AlertDialog.Builder(context)
+        val inflater = layoutInflater
+        val dialogLayout = inflater.inflate(R.layout.dialog_add_new_connection, null)
+        val deviceId: EditText = dialogLayout.findViewById(R.id.deviceId)
+        val devicePassword: EditText = dialogLayout.findViewById(R.id.devicePassword)
+
+        builder.setView(dialogLayout)
+        builder.setPositiveButton("Add") { dialog, _ ->
+            val deviceIdChecking = deviceId.text.toString()
+            val devicePasChecking = devicePassword.text.toString()
+            val deviceCreatedId = DeviceModel.getAutoId()
+            if (deviceIdChecking.isEmpty() || deviceIdChecking == "null" || deviceIdChecking == ""
+                || devicePasChecking.isEmpty() || devicePasChecking == "null" || devicePasChecking == "") {
+                Toast.makeText(context, "Enter required field", Toast.LENGTH_SHORT).show()
+            } else {
+                val stdD = DeviceModel(
+                    id = deviceCreatedId,
+                    deviceId = deviceIdChecking,
+                    devicePassword = devicePasChecking
+                )
+                val stdS = StatusModel(
+                    status_to_device = deviceCreatedId.toString(),
+                    status_current = "Connecting"
+                )
+                val statusD = sqliteHelper.insertDevice(stdD)
+                val statusS = sqliteHelper.insertStatus(stdS)
+
+                if (statusD > -1) {
+                    Toast.makeText(context, "Device added", Toast.LENGTH_SHORT).show()
+                    val stdList = sqliteHelper.getAllDevices()
+                    adapter?.addItems(stdList)
+                } else {
+                    Log.d("Testing device", statusD.toString())
+                    Log.d("Testing status", statusS.toString())
+                    Toast.makeText(context, "Device not added", Toast.LENGTH_SHORT).show()
+                }
             }
-            else {
-                Toast.makeText(context, "Device not added", Toast.LENGTH_SHORT).show()
-            }
         }
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+        val alert = builder.create()
+        alert.show()
     }
 
     private fun getDevicesFromDatabase() {
@@ -86,7 +110,6 @@ class Connections : Fragment(R.layout.fragment_connections) {
         builder.setNegativeButton("No") { dialog, _ ->
             dialog.dismiss()
         }
-
         val alert = builder.create()
         alert.show()
     }
@@ -95,13 +118,13 @@ class Connections : Fragment(R.layout.fragment_connections) {
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = RecyclerAdapter()
         recyclerView.adapter = adapter
+        val stdList = sqliteHelper.getAllDevices()
+        adapter?.addItems(stdList)
     }
 
     private fun dataInitialize() {
-        deviceIdEd = requireView().findViewById(R.id.device_idED)
+        recyclerView = requireView().findViewById(R.id.recyclerView)
         btnAddConnection = requireView().findViewById(R.id.btnAddConnection)
         btnRefresh = requireView().findViewById(R.id.btnRefresh)
-        recyclerView = requireView().findViewById(R.id.recyclerView)
     }
-
 }
